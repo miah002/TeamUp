@@ -33,7 +33,7 @@ export default function TalentEditForm({ talent }: { talent: TalentData }) {
     router.refresh();
   }
 
-  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:border-transparent";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
@@ -84,7 +84,7 @@ export default function TalentEditForm({ talent }: { talent: TalentData }) {
         <button
           type="submit"
           disabled={saving}
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
+          className="px-4 py-2 bg-[#C8102E] hover:bg-[#a50d26] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>

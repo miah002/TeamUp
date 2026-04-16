@@ -51,7 +51,7 @@ export default async function AdminDashboardPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard label="Total Talents" value={totalTalents} href="/admin/talents" color="text-indigo-600" />
+        <StatCard label="Total Talents" value={totalTalents} href="/admin/talents" color="text-[#C8102E]" />
         <StatCard label="Active Talents" value={activeTalents} sub={`${totalTalents - activeTalents} inactive`} href="/admin/talents" color="text-emerald-600" />
         <StatCard label="Courses" value={totalCourses} href="/admin/courses" color="text-purple-600" />
         <StatCard label="Pending Tasks" value={pendingTasks} href="/admin/tasks" color="text-amber-500" />
@@ -62,7 +62,7 @@ export default async function AdminDashboardPage() {
         <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-slate-900">Recent Talents</h2>
-            <Link href="/admin/talents" className="text-xs text-indigo-600 hover:underline">View all</Link>
+            <Link href="/admin/talents" className="text-xs text-[#C8102E] hover:underline">View all</Link>
           </div>
           {recentTalents.length === 0 ? (
             <p className="text-sm text-slate-400">No talents added yet.</p>
@@ -70,11 +70,11 @@ export default async function AdminDashboardPage() {
             <ul className="space-y-3">
               {recentTalents.map((t) => (
                 <li key={t.id} className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-semibold text-sm flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-red-100 text-[#a50d26] font-semibold text-sm flex items-center justify-center flex-shrink-0">
                     {t.name.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <Link href={`/admin/talents/${t.id}`} className="text-sm font-medium text-slate-800 hover:text-indigo-600 truncate block">
+                    <Link href={`/admin/talents/${t.id}`} className="text-sm font-medium text-slate-800 hover:text-[#C8102E] truncate block">
                       {t.name}
                     </Link>
                     <p className="text-xs text-slate-400 truncate">{t.position ?? "—"} {t.department ? `· ${t.department}` : ""}</p>
@@ -97,7 +97,7 @@ export default async function AdminDashboardPage() {
             <ul className="space-y-3">
               {recentEvents.map((ev) => (
                 <li key={ev.id} className="flex gap-3">
-                  <div className="w-2 h-2 mt-2 rounded-full bg-indigo-400 flex-shrink-0" />
+                  <div className="w-2 h-2 mt-2 rounded-full bg-[#e8395a] flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-slate-800">{ev.title}</p>
                     <p className="text-xs text-slate-400">

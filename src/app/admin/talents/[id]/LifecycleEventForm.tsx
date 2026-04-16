@@ -32,7 +32,7 @@ export default function LifecycleEventForm({ talentId }: { talentId: string }) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+        className="flex items-center gap-1 text-sm text-[#C8102E] hover:text-[#a50d26] font-medium"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -42,7 +42,7 @@ export default function LifecycleEventForm({ talentId }: { talentId: string }) {
     );
   }
 
-  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:border-transparent";
 
   return (
     <form onSubmit={handleSubmit} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
@@ -68,7 +68,7 @@ export default function LifecycleEventForm({ talentId }: { talentId: string }) {
         <textarea className={inputCls} rows={2} value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} />
       </div>
       <div className="flex gap-2">
-        <button type="submit" disabled={saving} className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg disabled:opacity-60">
+        <button type="submit" disabled={saving} className="px-3 py-1.5 bg-[#C8102E] hover:bg-[#a50d26] text-white text-xs font-medium rounded-lg disabled:opacity-60">
           {saving ? "Saving..." : "Save Event"}
         </button>
         <button type="button" onClick={() => setOpen(false)} className="px-3 py-1.5 text-slate-500 hover:text-slate-700 text-xs">Cancel</button>

@@ -44,14 +44,14 @@ export default function TaskBoard({ tasks, admins, currentUserId }: { tasks: Tas
     router.refresh();
   }
 
-  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:border-transparent";
 
   return (
     <div>
       <div className="flex justify-end mb-6">
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#C8102E] text-white text-sm font-medium rounded-lg hover:bg-[#a50d26] transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -93,7 +93,7 @@ export default function TaskBoard({ tasks, admins, currentUserId }: { tasks: Tas
             </div>
           </div>
           <div className="flex gap-2 pt-1">
-            <button type="submit" disabled={saving} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg disabled:opacity-60">
+            <button type="submit" disabled={saving} className="px-4 py-2 bg-[#C8102E] hover:bg-[#a50d26] text-white text-sm font-medium rounded-lg disabled:opacity-60">
               {saving ? "Saving..." : "Create Task"}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-slate-500 hover:text-slate-700 text-sm">Cancel</button>
@@ -113,7 +113,7 @@ export default function TaskBoard({ tasks, admins, currentUserId }: { tasks: Tas
               </div>
               <div className="space-y-3">
                 {colTasks.map((task) => (
-                  <div key={task.id} className="border border-slate-100 rounded-lg p-3 hover:border-indigo-200 transition-colors">
+                  <div key={task.id} className="border border-slate-100 rounded-lg p-3 hover:border-red-200 transition-colors">
                     <div className="flex items-start justify-between gap-2 mb-1">
                       <p className="text-sm font-medium text-slate-800 leading-snug">{task.title}</p>
                       <span className={`text-xs font-medium px-1.5 py-0.5 rounded flex-shrink-0 ${priorityColor[task.priority as keyof typeof priorityColor]}`}>
@@ -130,7 +130,7 @@ export default function TaskBoard({ tasks, admins, currentUserId }: { tasks: Tas
                         <button onClick={() => updateStatus(task.id, statusCols[statusCols.indexOf(col) - 1])} className="text-xs text-slate-400 hover:text-slate-600 px-2 py-0.5 hover:bg-slate-100 rounded">← Back</button>
                       )}
                       {col !== "DONE" && (
-                        <button onClick={() => updateStatus(task.id, statusCols[statusCols.indexOf(col) + 1])} className="text-xs text-indigo-600 hover:text-indigo-800 px-2 py-0.5 hover:bg-indigo-50 rounded">
+                        <button onClick={() => updateStatus(task.id, statusCols[statusCols.indexOf(col) + 1])} className="text-xs text-[#C8102E] hover:text-[#a50d26] px-2 py-0.5 hover:bg-red-50 rounded">
                           {col === "PENDING" ? "Start →" : "Done ✓"}
                         </button>
                       )}

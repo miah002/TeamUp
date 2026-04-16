@@ -63,7 +63,7 @@ export default function CourseProgressButtons({
     <button
       onClick={() => updateStatus("IN_PROGRESS")}
       disabled={loading}
-      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-60"
+      className="px-4 py-2 bg-[#C8102E] hover:bg-[#a50d26] text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-60"
     >
       {loading ? "Starting..." : "Start Course"}
     </button>

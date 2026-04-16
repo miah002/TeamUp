@@ -45,7 +45,7 @@ export default function CourseForm({ course }: { course: CourseData | null }) {
     router.refresh();
   }
 
-  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const inputCls = "w-full px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:border-transparent";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -78,7 +78,7 @@ export default function CourseForm({ course }: { course: CourseData | null }) {
             type="checkbox"
             checked={form.isRequired}
             onChange={(e) => set("isRequired", e.target.checked)}
-            className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+            className="w-4 h-4 rounded border-slate-300 text-[#C8102E] focus:ring-[#C8102E]"
           />
           <label htmlFor="required" className="text-sm font-medium text-slate-700">Required for all talents</label>
         </div>
@@ -93,7 +93,7 @@ export default function CourseForm({ course }: { course: CourseData | null }) {
       </div>
       <div className="flex items-center justify-between pt-2">
         <div className="flex gap-3">
-          <button type="submit" disabled={saving} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors">
+          <button type="submit" disabled={saving} className="px-4 py-2 bg-[#C8102E] hover:bg-[#a50d26] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors">
             {saving ? "Saving..." : course?.id ? "Update Course" : "Create Course"}
           </button>
           <button type="button" onClick={() => router.back()} className="px-4 py-2 text-slate-500 hover:text-slate-700 text-sm">Cancel</button>

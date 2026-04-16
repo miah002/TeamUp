@@ -50,7 +50,7 @@ export default async function AdminReportsPage() {
         <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
         <p className="text-slate-500 mt-1">
           Talent and course completion overview.{" "}
-          <span className="text-indigo-600 font-medium">Lark automated reports coming soon.</span>
+          <span className="text-[#C8102E] font-medium">Lark automated reports coming soon.</span>
         </p>
       </div>
 
@@ -58,7 +58,7 @@ export default async function AdminReportsPage() {
       <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Workforce</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Total Talents", value: totalTalents, color: "text-indigo-600" },
+          { label: "Total Talents", value: totalTalents, color: "text-[#C8102E]" },
           { label: "Active", value: activeTalents, color: "text-emerald-600" },
           { label: "On Leave", value: onLeaveTalents, color: "text-amber-500" },
           { label: "Resigned", value: resignedTalents, color: "text-red-500" },
@@ -81,7 +81,7 @@ export default async function AdminReportsPage() {
                   <span className="text-sm text-slate-700 w-36 truncate">{d.department}</span>
                   <div className="flex-1 bg-slate-100 rounded-full h-2">
                     <div
-                      className="bg-indigo-500 h-2 rounded-full"
+                      className="bg-[#C8102E] h-2 rounded-full"
                       style={{ width: `${totalTalents > 0 ? (d._count.id / totalTalents) * 100 : 0}%` }}
                     />
                   </div>
@@ -97,7 +97,7 @@ export default async function AdminReportsPage() {
       <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Training & Courses</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {[
-          { label: "Total Courses", value: totalCourses, color: "text-indigo-600" },
+          { label: "Total Courses", value: totalCourses, color: "text-[#C8102E]" },
           { label: "Required Courses", value: requiredCourses, color: "text-red-500" },
           { label: "Completions", value: completedCount, color: "text-emerald-600" },
           { label: "In Progress", value: inProgressCount, color: "text-amber-500" },
@@ -110,12 +110,12 @@ export default async function AdminReportsPage() {
       </div>
 
       {requiredCourses > 0 && (
-        <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 mb-8 flex items-center gap-4">
+        <div className="bg-red-50 border border-red-100 rounded-xl p-4 mb-8 flex items-center gap-4">
           <div>
-            <p className="text-sm font-semibold text-indigo-900">Required Course Compliance</p>
-            <p className="text-xs text-indigo-600 mt-0.5">{compliantTalents} of {talentsWithCourses.length} active talents have completed all required courses</p>
+            <p className="text-sm font-semibold text-[#1B1F3B]">Required Course Compliance</p>
+            <p className="text-xs text-[#C8102E] mt-0.5">{compliantTalents} of {talentsWithCourses.length} active talents have completed all required courses</p>
           </div>
-          <div className="ml-auto text-3xl font-bold text-indigo-700">
+          <div className="ml-auto text-3xl font-bold text-[#a50d26]">
             {talentsWithCourses.length > 0 ? Math.round((compliantTalents / talentsWithCourses.length) * 100) : 0}%
           </div>
         </div>
@@ -139,7 +139,7 @@ export default async function AdminReportsPage() {
                       <span className="text-sm font-semibold text-slate-600">{c.completed}/{totalTalents}</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2">
-                      <div className="bg-indigo-500 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                      <div className="bg-[#C8102E] h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
                 );

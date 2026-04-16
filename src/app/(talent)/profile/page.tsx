@@ -45,7 +45,7 @@ export default async function ProfilePage() {
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         {/* Profile Card */}
         <div className="md:col-span-1 bg-white rounded-xl border border-slate-100 shadow-sm p-6 text-center">
-          <div className="w-20 h-20 rounded-full bg-indigo-100 text-indigo-700 text-3xl font-bold flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 rounded-full bg-red-100 text-[#a50d26] text-3xl font-bold flex items-center justify-center mx-auto mb-4">
             {user.name.charAt(0).toUpperCase()}
           </div>
           <h2 className="text-lg font-bold text-slate-900">{user.name}</h2>
@@ -100,11 +100,11 @@ export default async function ProfilePage() {
             <div className="flex items-center gap-4 mb-4">
               <div className="flex-1 bg-slate-100 rounded-full h-3">
                 <div
-                  className="bg-indigo-600 h-3 rounded-full transition-all"
+                  className="bg-[#C8102E] h-3 rounded-full transition-all"
                   style={{ width: `${completionPct}%` }}
                 />
               </div>
-              <span className="text-sm font-semibold text-indigo-600 w-10 text-right">{completionPct}%</span>
+              <span className="text-sm font-semibold text-[#C8102E] w-10 text-right">{completionPct}%</span>
             </div>
             <p className="text-sm text-slate-500">{completedCourses.length} of {allCourses} courses completed</p>
 

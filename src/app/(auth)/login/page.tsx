@@ -33,17 +33,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
       <div className="w-full max-w-md">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600 mb-4 shadow-lg">
-            <svg className="w-9 h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+          <div className="flex items-center justify-center gap-0 mb-4">
+            <span className="text-5xl font-extrabold text-[#1B1F3B] tracking-tight leading-none">tm</span>
+            <span className="text-5xl font-extrabold text-[#C8102E] tracking-tight leading-none">up</span>
           </div>
-          <h1 className="text-3xl font-bold text-slate-900">TeamUp Talents</h1>
-          <p className="text-slate-500 mt-1 text-sm">Sign in to your account</p>
+          <p className="text-slate-500 text-sm mt-1">Talents Portal — Sign in to your account</p>
         </div>
 
         {/* Card */}
@@ -60,8 +58,8 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@teamup.com"
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                placeholder="you@weareteamup.com"
+                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:border-transparent transition"
               />
             </div>
 
@@ -77,7 +75,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:border-transparent transition"
               />
             </div>
 
@@ -93,7 +91,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="w-full py-2.5 px-4 bg-[#C8102E] hover:bg-[#a50d26] disabled:bg-red-300 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:ring-offset-2"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -114,6 +112,10 @@ export default function LoginPage() {
             <br />Contact your admin if you need help.
           </p>
         </div>
+
+        <p className="text-center text-xs text-slate-400 mt-6">
+          © {new Date().getFullYear()} TeamUp Healthcare Support Staffing
+        </p>
       </div>
     </div>
   );

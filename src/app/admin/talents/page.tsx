@@ -29,7 +29,7 @@ export default async function AdminTalentsPage() {
         </div>
         <Link
           href="/admin/talents/new"
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#C8102E] text-white text-sm font-medium rounded-lg hover:bg-[#a50d26] transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -66,7 +66,7 @@ export default async function AdminTalentsPage() {
                   <tr key={t.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-semibold text-sm flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-red-100 text-[#a50d26] font-semibold text-sm flex items-center justify-center flex-shrink-0">
                           {t.name.charAt(0)}
                         </div>
                         <div>
@@ -86,7 +86,7 @@ export default async function AdminTalentsPage() {
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2">
                         <div className="w-16 bg-slate-100 rounded-full h-1.5">
-                          <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
+                          <div className="bg-[#C8102E] h-1.5 rounded-full" style={{ width: `${pct}%` }} />
                         </div>
                         <span className="text-slate-500 text-xs">{completed}/{allCourses}</span>
                       </div>
@@ -95,7 +95,7 @@ export default async function AdminTalentsPage() {
                       {t.startDate ? new Date(t.startDate).toLocaleDateString() : "—"}
                     </td>
                     <td className="px-5 py-3">
-                      <Link href={`/admin/talents/${t.id}`} className="text-indigo-600 hover:underline text-xs font-medium">
+                      <Link href={`/admin/talents/${t.id}`} className="text-[#C8102E] hover:underline text-xs font-medium">
                         View
                       </Link>
                     </td>

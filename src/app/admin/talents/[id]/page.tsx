@@ -36,7 +36,7 @@ export default async function AdminTalentDetailPage({ params }: { params: Promis
       </Link>
 
       <div className="flex items-center gap-4 mb-8">
-        <div className="w-14 h-14 rounded-full bg-indigo-100 text-indigo-700 text-2xl font-bold flex items-center justify-center">
+        <div className="w-14 h-14 rounded-full bg-red-100 text-[#a50d26] text-2xl font-bold flex items-center justify-center">
           {talent.name.charAt(0)}
         </div>
         <div>

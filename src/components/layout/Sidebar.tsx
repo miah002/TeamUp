@@ -19,7 +19,7 @@ function NavLink({ href, label, icon }: NavItem) {
       href={href}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
         isActive
-          ? "bg-indigo-600 text-white shadow-sm"
+          ? "bg-[#C8102E] text-white shadow-sm"
           : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
       }`}
     >
@@ -123,14 +123,15 @@ export default function Sidebar({
       {/* Brand */}
       <div className="px-5 py-5 border-b border-slate-100">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+          {/* tmup logo text */}
+          <div className="flex items-center leading-none select-none">
+            <span className="text-2xl font-extrabold text-[#1B1F3B] tracking-tight">tm</span>
+            <span className="text-2xl font-extrabold text-[#C8102E] tracking-tight">up</span>
           </div>
-          <div>
-            <div className="text-sm font-bold text-slate-900">TeamUp</div>
-            <div className="text-xs text-slate-400">{role === "ADMIN" ? "Admin Panel" : "Talents Portal"}</div>
+          <div className="border-l border-slate-200 pl-3">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              {role === "ADMIN" ? "Admin Panel" : "Talents Portal"}
+            </div>
           </div>
         </div>
       </div>
@@ -145,7 +146,7 @@ export default function Sidebar({
       {/* User Info + Sign Out */}
       <div className="px-4 py-4 border-t border-slate-100">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-semibold text-sm flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-[#C8102E] font-semibold text-sm flex-shrink-0">
             {userName.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0">
@@ -155,7 +156,7 @@ export default function Sidebar({
         </div>
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

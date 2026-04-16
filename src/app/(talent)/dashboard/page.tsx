@@ -48,14 +48,14 @@ export default async function DashboardPage() {
             ? `${user.position} · ${user.department}`
             : "TeamUp Talent"}
           {daysAtTeamUp !== null && (
-            <span className="ml-2 text-indigo-600 font-medium">· {daysAtTeamUp} days with the team</span>
+            <span className="ml-2 text-[#C8102E] font-medium">· {daysAtTeamUp} days with the team</span>
           )}
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard label="Courses Completed" value={completed} sub={`of ${allCourses.length} total`} color="text-indigo-600" />
+        <StatCard label="Courses Completed" value={completed} sub={`of ${allCourses.length} total`} color="text-[#C8102E]" />
         <StatCard label="In Progress" value={inProgress} color="text-amber-500" />
         <StatCard label="Required Completed" value={`${completedRequired}/${required}`} sub="mandatory courses" color="text-emerald-600" />
         <StatCard
@@ -94,7 +94,7 @@ export default async function DashboardPage() {
                     {status !== "COMPLETED" && (
                       <a
                         href={`/courses/${course.id}`}
-                        className="text-xs text-indigo-600 hover:underline flex-shrink-0"
+                        className="text-xs text-[#C8102E] hover:underline flex-shrink-0"
                       >
                         {status === "IN_PROGRESS" ? "Continue" : "Start"}
                       </a>
@@ -115,7 +115,7 @@ export default async function DashboardPage() {
             <ul className="space-y-3">
               {user.lifecycleEvents.map((event) => (
                 <li key={event.id} className="flex gap-3">
-                  <div className="mt-0.5 w-2 h-2 rounded-full bg-indigo-400 flex-shrink-0" />
+                  <div className="mt-0.5 w-2 h-2 rounded-full bg-[#e8395a] flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-slate-800">{event.title}</p>
                     <p className="text-xs text-slate-400">

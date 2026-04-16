@@ -39,17 +39,17 @@ export default async function CoursesPage() {
       </div>
 
       {/* Progress summary */}
-      <div className="bg-indigo-600 rounded-xl p-5 text-white mb-8 flex gap-8">
+      <div className="bg-[#C8102E] rounded-xl p-5 text-white mb-8 flex gap-8">
         <div>
-          <p className="text-indigo-200 text-sm">Total Courses</p>
+          <p className="text-red-200 text-sm">Total Courses</p>
           <p className="text-3xl font-bold">{courses.length}</p>
         </div>
         <div>
-          <p className="text-indigo-200 text-sm">Completed</p>
+          <p className="text-red-200 text-sm">Completed</p>
           <p className="text-3xl font-bold">{progress.filter((p) => p.status === "COMPLETED").length}</p>
         </div>
         <div>
-          <p className="text-indigo-200 text-sm">In Progress</p>
+          <p className="text-red-200 text-sm">In Progress</p>
           <p className="text-3xl font-bold">{progress.filter((p) => p.status === "IN_PROGRESS").length}</p>
         </div>
       </div>
@@ -76,7 +76,7 @@ export default async function CoursesPage() {
                     <Link
                       key={course.id}
                       href={`/courses/${course.id}`}
-                      className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-indigo-200 transition-all group"
+                      className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-red-200 transition-all group"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catColor}`}>{cat}</span>
@@ -84,7 +84,7 @@ export default async function CoursesPage() {
                           <span className="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Required</span>
                         )}
                       </div>
-                      <h3 className="font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors mb-1">
+                      <h3 className="font-semibold text-slate-900 group-hover:text-[#a50d26] transition-colors mb-1">
                         {course.title}
                       </h3>
                       {course.description && (

@@ -32,7 +32,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
         <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
           <div>
             {course.category && (
-              <span className="text-xs font-medium text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-medium text-[#a50d26] bg-red-50 px-2 py-0.5 rounded-full">
                 {course.category}
               </span>
             )}
@@ -66,7 +66,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
             href={course.contentUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#C8102E] text-white text-sm font-medium rounded-lg hover:bg-[#a50d26] transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

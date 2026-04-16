@@ -25,7 +25,7 @@ export default async function AdminCoursesPage() {
         </div>
         <Link
           href="/admin/courses/new"
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#C8102E] text-white text-sm font-medium rounded-lg hover:bg-[#a50d26] transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -76,13 +76,13 @@ export default async function AdminCoursesPage() {
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2">
                         <div className="w-20 bg-slate-100 rounded-full h-1.5">
-                          <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${pct}%` }} />
+                          <div className="bg-[#C8102E] h-1.5 rounded-full" style={{ width: `${pct}%` }} />
                         </div>
                         <span className="text-xs text-slate-500">{completed}/{totalTalents}</span>
                       </div>
                     </td>
                     <td className="px-5 py-3">
-                      <Link href={`/admin/courses/${course.id}`} className="text-indigo-600 hover:underline text-xs font-medium">
+                      <Link href={`/admin/courses/${course.id}`} className="text-[#C8102E] hover:underline text-xs font-medium">
                         Edit
                       </Link>
                     </td>
