@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String
+  password   String
+  role       String   @default("TALENT") // TALENT | ADMIN
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Profile fields
+  position   String?
+  department String?
+  startDate  DateTime?
+  status     String    @default("ACTIVE") // ACTIVE | INACTIVE | ON_LEAVE | RESIGNED
+  avatar     String?
+  phone      String?
+  bio        String?
+  larkId     String?
+
+  // Relations
+  courseProgress  CourseProgress[]
+  lifecycleEvents LifecycleEvent[]
+  adminTasks      AdminTask[]      @relation("AssignedTo")
+  createdTasks    AdminTask[]      @relation("CreatedBy")
+
+  @@map("users")
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  category    String?
+  duration    Int?
+  thumbnail   String?
+  contentUrl  String?
+  contentBody String?
+  isRequired  Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  progress CourseProgress[]
+
+  @@map("courses")
+}
+
+model CourseProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  courseId    String
+  status      String    @default("NOT_STARTED") // NOT_STARTED | IN_PROGRESS | COMPLETED
+  startedAt   DateTime?
+  completedAt DateTime?
+  score       Float?
+  notes       String?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@map("course_progress")
+}
+
+model LifecycleEvent {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // HIRED | PROMOTED | DEPARTMENT_CHANGE | STATUS_CHANGE | PERFORMANCE_REVIEW | WARNING | RECOGNITION | RESIGNED
+  title       String
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("lifecycle_events")
+}
+
+model AdminTask {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  status      String    @default("PENDING") // PENDING | IN_PROGRESS | DONE
+  priority    String    @default("MEDIUM")  // LOW | MEDIUM | HIGH
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  assignedToId String?
+  createdById  String
+
+  assignedTo User? @relation("AssignedTo", fields: [assignedToId], references: [id])
+  createdBy  User  @relation("CreatedBy", fields: [createdById], references: [id])
+
+  @@map("admin_tasks")
+}
