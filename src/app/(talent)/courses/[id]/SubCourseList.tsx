@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 interface SubCourse {
@@ -23,9 +23,19 @@ export default function SubCourseList({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
+  const [localStatus, setLocalStatus] = useState(courseStatus);
   const [local, setLocal] = useState<Record<string, boolean>>(
     Object.fromEntries(subCourses.map((s) => [s.id, s.completed]))
   );
+
+  // Sync local state when server refreshes props
+  useEffect(() => {
+    setLocal(Object.fromEntries(subCourses.map((s) => [s.id, s.completed])));
+  }, [subCourses]);
+
+  useEffect(() => {
+    setLocalStatus(courseStatus);
+  }, [courseStatus]);
 
   async function updateCourseStatus(status: string) {
     await fetch("/api/progress", {
@@ -53,12 +63,15 @@ export default function SubCourseList({
     if (doneCount === total) {
       // All modules checked → auto-complete the course
       await updateCourseStatus("COMPLETED");
-    } else if (doneCount > 0 && courseStatus === "NOT_STARTED") {
+      setLocalStatus("COMPLETED");
+    } else if (doneCount > 0 && localStatus === "NOT_STARTED") {
       // First module checked → auto-start the course
       await updateCourseStatus("IN_PROGRESS");
-    } else if (!next && courseStatus === "COMPLETED") {
+      setLocalStatus("IN_PROGRESS");
+    } else if (!next && localStatus === "COMPLETED") {
       // Unchecked a module while course was completed → revert to in progress
       await updateCourseStatus("IN_PROGRESS");
+      setLocalStatus("IN_PROGRESS");
     }
 
     setLoading(null);
