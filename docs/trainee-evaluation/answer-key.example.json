@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "passing_percent": 75,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "exact",
+      "prompt": "What is the default port of PostgreSQL?",
+      "expected": "5432",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q2",
+      "type": "exact",
+      "prompt": "Which HTTP status code indicates 'Not Found'?",
+      "expected": "404",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q3",
+      "type": "scenario",
+      "prompt": "A customer reports the app is slow only at 9am. Walk through your debugging approach.",
+      "expected_points": [
+        "checks traffic or load spike at 9am",
+        "looks at logs and metrics around that window",
+        "considers scheduled jobs or cron",
+        "forms a hypothesis before making changes",
+        "proposes a safe rollback plan"
+      ],
+      "required_keywords": ["logs", "metrics"],
+      "weight": 3,
+      "max_score": 5
+    },
+    {
+      "id": "q4",
+      "type": "scenario",
+      "prompt": "A teammate pushes a migration that drops a column still used by an older deployed service. What do you do?",
+      "expected_points": [
+        "stops the rollout or reverts the migration",
+        "communicates with the teammate and on-call",
+        "recognizes the expand/contract pattern",
+        "discusses backfill or dual-write before dropping"
+      ],
+      "required_keywords": ["revert", "migration"],
+      "weight": 3,
+      "max_score": 5
+    }
+  ]
+}

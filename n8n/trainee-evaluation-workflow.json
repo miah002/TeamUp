@@ -1,0 +1,301 @@
+{
+  "name": "Trainee Evaluation (Lark + LLM)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lark/trainee-form",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Webhook: Lark form submit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "webhookId": "lark-trainee-form"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalize Lark Base automation / event payload into a canonical shape.\n// Lark Base automation webhook -> fields at $json.record.fields\n// Lark Open Platform event       -> fields at $json.event.record.fields\nconst body = $input.first().json;\nconst rec  = body.record ?? body.event?.record ?? body;\nconst fields = rec.fields ?? body.fields ?? {};\n\nconst answers = {};\nfor (const k of Object.keys(fields)) {\n  if (/^q\\d+$/i.test(k)) answers[k.toLowerCase()] = String(fields[k] ?? '');\n}\n\nreturn [{\n  json: {\n    submission_id: rec.record_id ?? body.record_id ?? body.event_id ?? crypto.randomUUID(),\n    name:  fields.name  ?? fields.Name  ?? '',\n    email: fields.email ?? fields.Email ?? '',\n    answers,\n  }\n}];"
+      },
+      "id": "normalize-1",
+      "name": "Normalize submission",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stub answer key loader. In production replace this node with an\n// HTTP Request / Lark Base read that returns the same JSON shape.\nreturn [{\n  json: {\n    version: 1,\n    passing_percent: 75,\n    questions: [\n      { id: 'q1', type: 'exact',    prompt: 'Default PostgreSQL port?', expected: '5432', weight: 1, normalize: 'trim_lower' },\n      { id: 'q2', type: 'exact',    prompt: 'HTTP status for Not Found?', expected: '404', weight: 1, normalize: 'trim_lower' },\n      {\n        id: 'q3', type: 'scenario', weight: 3, max_score: 5,\n        prompt: 'A customer reports the app is slow only at 9am. Walk through your debugging approach.',\n        expected_points: [\n          'checks traffic or load spike at 9am',\n          'looks at logs and metrics around that window',\n          'considers scheduled jobs or cron',\n          'forms a hypothesis before making changes'\n        ],\n        required_keywords: ['logs', 'metrics']\n      }\n    ]\n  }\n}];"
+      },
+      "id": "answerkey-1",
+      "name": "Load answer key",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 480]
+    },
+    {
+      "parameters": {
+        "jsCode": "const key = $('Load answer key').first().json;\nconst submission = $('Normalize submission').first().json;\n\nreturn key.questions.map(q => ({\n  json: {\n    submission_id:   submission.submission_id,\n    name:            submission.name,\n    email:           submission.email,\n    passing_percent: key.passing_percent,\n    rubric_version:  key.version,\n    question:        q,\n    answer:         (submission.answers?.[q.id] ?? '').toString(),\n  }\n}));"
+      },
+      "id": "fanout-1",
+      "name": "Build per-question items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "typeValidation": "strict" },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.question.type}}",
+                    "rightValue": "exact",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ]
+              },
+              "outputKey": "exact"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "typeValidation": "strict" },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.question.type}}",
+                    "rightValue": "scenario",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ]
+              },
+              "outputKey": "scenario"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "switch-1",
+      "name": "Switch: exact vs scenario",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [940, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { question, answer } = $json;\nconst norm = s => question.normalize === 'trim_lower'\n  ? String(s).trim().toLowerCase()\n  : String(s).trim();\n\nconst match = norm(answer) === norm(question.expected ?? '');\nreturn [{\n  json: {\n    ...$json,\n    per_question: {\n      id: question.id,\n      type: 'exact',\n      score: match ? question.weight : 0,\n      max:   question.weight,\n      feedback: match ? 'Correct.' : 'Incorrect.'\n    }\n  }\n}];"
+      },
+      "id": "exact-score-1",
+      "name": "Exact match score",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1180, 200]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "operation": "message",
+        "modelId": { "__rl": true, "value": "gpt-4.1-mini", "mode": "list" },
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are a strict but fair grader for a technical trainee evaluation. You score one free-response answer at a time against a rubric. You do not reveal the rubric to the candidate. You respond with a single JSON object, no prose, no markdown fences. If the candidate's answer is empty or off-topic, score 0."
+            },
+            {
+              "role": "user",
+              "content": "=QUESTION:\n{{$json.question.prompt}}\n\nRUBRIC — expected points the answer should cover:\n{{ $json.question.expected_points.map(p => '- ' + p).join('\\n') }}\n\nREQUIRED KEYWORDS (the answer must at least mention these concepts):\n{{ ($json.question.required_keywords || []).join(', ') }}\n\nCANDIDATE ANSWER:\n\"\"\"\n{{$json.answer}}\n\"\"\"\n\nScore the answer from 0 to {{$json.question.max_score}} using these criteria, each weighted equally:\n  - Relevance: addresses the question directly.\n  - Completeness: covers the expected points above.\n  - Reasoning: shows a defensible thought process, not just keywords.\n\nReturn JSON with this exact schema:\n{\n  \"score\": <integer 0..{{$json.question.max_score}}>,\n  \"keywords_found\": [<string>, ...],\n  \"missing_points\": [<string>, ...],\n  \"reasoning\": \"<one or two sentences>\"\n}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": { "temperature": 0 }
+      },
+      "id": "llm-1",
+      "name": "LLM: grade scenario",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [1180, 400],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse LLM JSON + apply keyword floor + compute weighted score.\nconst item = $input.first().json;\nconst question = item.question;\nconst answer   = item.answer;\n\n// LLM response shape varies slightly by n8n version.\nlet raw = item.message?.content ?? item.choices?.[0]?.message?.content ?? item.text ?? '';\nlet out;\ntry { out = typeof raw === 'string' ? JSON.parse(raw) : raw; }\ncatch { out = { score: 0, reasoning: 'Malformed LLM output, defaulted to 0.', missing_points: [], keywords_found: [] }; }\n\nconst maxQ = question.max_score ?? 5;\nlet score = Math.max(0, Math.min(maxQ, Number(out.score) || 0));\n\nif (question.required_keywords?.length) {\n  const lower = (answer || '').toLowerCase();\n  const missing = question.required_keywords.filter(k => !lower.includes(k.toLowerCase()));\n  if (missing.length) score = Math.min(score, Math.floor(maxQ / 2));\n}\n\nconst weighted = (score * question.weight) / maxQ;\nreturn [{\n  json: {\n    ...item,\n    per_question: {\n      id: question.id,\n      type: 'scenario',\n      score: weighted,\n      max:   question.weight,\n      raw_score: score,\n      max_raw:   maxQ,\n      feedback:  out.reasoning ?? '',\n      missing:   out.missing_points ?? [],\n    }\n  }\n}];"
+      },
+      "id": "scenario-score-1",
+      "name": "Apply keyword floor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1400, 400]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-1",
+      "name": "Merge branches",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1640, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all().map(i => i.json.per_question);\nconst sub   = $('Normalize submission').first().json;\nconst key   = $('Load answer key').first().json;\n\nconst score = items.reduce((s, q) => s + q.score, 0);\nconst max   = items.reduce((s, q) => s + q.max,   0);\nconst percent = max > 0 ? Math.round((score / max) * 1000) / 10 : 0;\nconst pass = percent >= key.passing_percent;\n\nreturn [{\n  json: {\n    submission_id: sub.submission_id,\n    name:  sub.name,\n    email: sub.email,\n    answers: sub.answers,\n    per_question: items,\n    score, max, percent,\n    result: pass ? 'Pass' : 'Fail',\n    rubric_version: key.version,\n    graded_at: new Date().toISOString(),\n  }\n}];"
+      },
+      "id": "aggregate-1",
+      "name": "Aggregate + total score",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1860, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "strict" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{$json.result}}",
+              "rightValue": "Pass",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if-1",
+      "name": "IF: passed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [2080, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "trainees@teamup.example",
+        "toEmail": "={{$json.email}}",
+        "subject": "You passed the TeamUp evaluation",
+        "emailType": "text",
+        "message": "=Hi {{$json.name}},\n\nCongratulations — you scored {{$json.percent}}% and passed the TeamUp trainee evaluation. A trainer will reach out with next steps shortly.\n\n— TeamUp",
+        "options": {}
+      },
+      "id": "email-pass",
+      "name": "Email: pass",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [2320, 200]
+    },
+    {
+      "parameters": {
+        "fromEmail": "trainees@teamup.example",
+        "toEmail": "={{$json.email}}",
+        "subject": "TeamUp evaluation result",
+        "emailType": "text",
+        "message": "=Hi {{$json.name}},\n\nThanks for submitting the TeamUp trainee evaluation. You scored {{$json.percent}}%, which is below our {{$json.passing_percent}}% passing threshold.\n\nYou are welcome to retake the evaluation here:\nhttps://forms.larksuite.com/your-form-id?prefill_email={{$json.email}}\n\n— TeamUp",
+        "options": {}
+      },
+      "id": "email-fail",
+      "name": "Email: fail + retake",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [2320, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $json;\nreturn [{\n  json: {\n    submission_id: j.submission_id,\n    name: j.name,\n    email: j.email,\n    answers_json: JSON.stringify(j.answers),\n    per_q_json:   JSON.stringify(j.per_question),\n    score: j.score,\n    max_score: j.max,\n    percent: j.percent,\n    result: j.result,\n    rubric_version: j.rubric_version,\n    graded_at: j.graded_at\n  }\n}];"
+      },
+      "id": "prep-row",
+      "name": "Prepare row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2560, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://open.larksuite.com/open-apis/bitable/v1/apps/{{$env.LARK_BASE_APP}}/tables/{{$env.LARK_RESULTS_TABLE}}/records",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "larkApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"fields\": {{ JSON.stringify($json) }} }",
+        "options": {}
+      },
+      "id": "lark-base-write",
+      "name": "Lark Base: upsert result",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2780, 300]
+    }
+  ],
+  "connections": {
+    "Webhook: Lark form submit": {
+      "main": [[{ "node": "Normalize submission", "type": "main", "index": 0 }]]
+    },
+    "Normalize submission": {
+      "main": [[
+        { "node": "Load answer key", "type": "main", "index": 0 },
+        { "node": "Build per-question items", "type": "main", "index": 0 }
+      ]]
+    },
+    "Load answer key": {
+      "main": [[{ "node": "Build per-question items", "type": "main", "index": 0 }]]
+    },
+    "Build per-question items": {
+      "main": [[{ "node": "Switch: exact vs scenario", "type": "main", "index": 0 }]]
+    },
+    "Switch: exact vs scenario": {
+      "main": [
+        [{ "node": "Exact match score", "type": "main", "index": 0 }],
+        [{ "node": "LLM: grade scenario", "type": "main", "index": 0 }]
+      ]
+    },
+    "Exact match score": {
+      "main": [[{ "node": "Merge branches", "type": "main", "index": 0 }]]
+    },
+    "LLM: grade scenario": {
+      "main": [[{ "node": "Apply keyword floor", "type": "main", "index": 0 }]]
+    },
+    "Apply keyword floor": {
+      "main": [[{ "node": "Merge branches", "type": "main", "index": 1 }]]
+    },
+    "Merge branches": {
+      "main": [[{ "node": "Aggregate + total score", "type": "main", "index": 0 }]]
+    },
+    "Aggregate + total score": {
+      "main": [[{ "node": "IF: passed?", "type": "main", "index": 0 }]]
+    },
+    "IF: passed?": {
+      "main": [
+        [{ "node": "Email: pass", "type": "main", "index": 0 }],
+        [{ "node": "Email: fail + retake", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email: pass": {
+      "main": [[{ "node": "Prepare row", "type": "main", "index": 0 }]]
+    },
+    "Email: fail + retake": {
+      "main": [[{ "node": "Prepare row", "type": "main", "index": 0 }]]
+    },
+    "Prepare row": {
+      "main": [[{ "node": "Lark Base: upsert result", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Imports a Lark form submission, grades objective answers deterministically and scenario answers via an LLM with keyword floor, emails the candidate, and writes the result to Lark Base."
+  }
+}
