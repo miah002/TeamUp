@@ -4,20 +4,44 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import CourseProgressButtons from "./CourseProgressButtons";
+import SubCourseList from "./SubCourseList";
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session) return null;
 
   const { id } = await params;
-  const course = await prisma.course.findUnique({ where: { id } });
+  const course = await prisma.course.findUnique({
+    where: { id },
+    include: { subCourses: { orderBy: { order: "asc" } } },
+  });
   if (!course) notFound();
 
   const progress = await prisma.courseProgress.findUnique({
     where: { userId_courseId: { userId: session.user.id, courseId: course.id } },
   });
 
+  const subCourseProgress = course.subCourses.length > 0
+    ? await prisma.subCourseProgress.findMany({
+        where: { userId: session.user.id, subCourseId: { in: course.subCourses.map((s) => s.id) } },
+      })
+    : [];
+
+  const progressMap = Object.fromEntries(subCourseProgress.map((p) => [p.subCourseId, p.completed]));
   const status = progress?.status ?? "NOT_STARTED";
+
+  const subCoursesWithProgress = course.subCourses.map((s) => ({
+    id: s.id,
+    title: s.title,
+    description: s.description,
+    url: s.url,
+    order: s.order,
+    completed: progressMap[s.id] ?? false,
+  }));
+
+  const doneCount = subCoursesWithProgress.filter((s) => s.completed).length;
+  const totalSubs = subCoursesWithProgress.length;
+  const subPct = totalSubs > 0 ? Math.round((doneCount / totalSubs) * 100) : null;
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
@@ -40,14 +64,22 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
               <span className="ml-2 text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Required</span>
             )}
           </div>
-          {course.duration && (
-            <span className="text-sm text-slate-400">{course.duration} min</span>
-          )}
+          {course.duration && <span className="text-sm text-slate-400">{course.duration} min</span>}
         </div>
 
         <h1 className="text-2xl font-bold text-slate-900 mb-2">{course.title}</h1>
-        {course.description && (
-          <p className="text-slate-600 leading-relaxed mb-6">{course.description}</p>
+        {course.description && <p className="text-slate-600 leading-relaxed mb-4">{course.description}</p>}
+
+        {subPct !== null && (
+          <div className="flex items-center gap-3 mb-4 p-3 bg-slate-50 rounded-lg">
+            <div className="flex-1 bg-slate-200 rounded-full h-2">
+              <div
+                className={"h-2 rounded-full transition-all " + (subPct === 100 ? "bg-emerald-500" : "bg-[#C8102E]")}
+                style={{ width: subPct + "%" }}
+              />
+            </div>
+            <span className="text-sm font-semibold text-slate-700 flex-shrink-0">{doneCount}/{totalSubs} modules · {subPct}%</span>
+          </div>
         )}
 
         <CourseProgressButtons courseId={course.id} currentStatus={status} />
@@ -58,6 +90,13 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
           </p>
         )}
       </div>
+
+      {subCoursesWithProgress.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 mb-6">
+          <h2 className="font-semibold text-slate-900 mb-4">Course Modules</h2>
+          <SubCourseList subCourses={subCoursesWithProgress} />
+        </div>
+      )}
 
       {course.contentUrl && (
         <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 mb-6">
@@ -79,9 +118,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
       {course.contentBody && (
         <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6">
           <h2 className="font-semibold text-slate-900 mb-4">Content</h2>
-          <div className="text-sm whitespace-pre-wrap text-slate-700 leading-relaxed">
-            {course.contentBody}
-          </div>
+          <div className="text-sm whitespace-pre-wrap text-slate-700 leading-relaxed">{course.contentBody}</div>
         </div>
       )}
     </div>

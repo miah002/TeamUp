@@ -24,10 +24,17 @@ export default async function CoursesPage() {
   const session = await getServerSession(authOptions);
   if (!session) return null;
 
-  const courses = await prisma.course.findMany({ orderBy: [{ order: "asc" }, { createdAt: "desc" }] });
+  const courses = await prisma.course.findMany({
+    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+    include: { subCourses: { select: { id: true } } },
+  });
   const progress = await prisma.courseProgress.findMany({ where: { userId: session.user.id } });
+  const subProgress = await prisma.subCourseProgress.findMany({
+    where: { userId: session.user.id, completed: true },
+  });
 
   const progressMap = Object.fromEntries(progress.map((p) => [p.courseId, p.status]));
+  const completedSubIds = new Set(subProgress.map((p) => p.subCourseId));
 
   const categories = [...new Set(courses.map((c) => c.category ?? "General"))];
 
@@ -38,7 +45,6 @@ export default async function CoursesPage() {
         <p className="text-slate-500 mt-1">All available training materials and courses for TeamUp talents.</p>
       </div>
 
-      {/* Progress summary */}
       <div className="bg-[#C8102E] rounded-xl p-5 text-white mb-8 flex gap-8">
         <div>
           <p className="text-red-200 text-sm">Total Courses</p>
@@ -56,11 +62,8 @@ export default async function CoursesPage() {
 
       {courses.length === 0 ? (
         <div className="text-center py-16 text-slate-400">
-          <svg className="w-12 h-12 mx-auto mb-3 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
           <p className="font-medium">No courses yet</p>
-          <p className="text-sm mt-1">Check back soon — your admin will add training materials here.</p>
+          <p className="text-sm mt-1">Check back soon.</p>
         </div>
       ) : (
         categories.map((cat) => {
@@ -72,14 +75,18 @@ export default async function CoursesPage() {
                 {catCourses.map((course) => {
                   const status = progressMap[course.id] ?? "NOT_STARTED";
                   const catColor = categoryColors[cat] ?? categoryColors.General;
+                  const totalSubs = course.subCourses.length;
+                  const doneSubs = course.subCourses.filter((s) => completedSubIds.has(s.id)).length;
+                  const subPct = totalSubs > 0 ? Math.round((doneSubs / totalSubs) * 100) : null;
+
                   return (
                     <Link
                       key={course.id}
-                      href={`/courses/${course.id}`}
+                      href={"/courses/" + course.id}
                       className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-red-200 transition-all group"
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catColor}`}>{cat}</span>
+                        <span className={"text-xs font-medium px-2 py-0.5 rounded-full " + catColor}>{cat}</span>
                         {course.isRequired && (
                           <span className="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Required</span>
                         )}
@@ -87,14 +94,22 @@ export default async function CoursesPage() {
                       <h3 className="font-semibold text-slate-900 group-hover:text-[#a50d26] transition-colors mb-1">
                         {course.title}
                       </h3>
-                      {course.description && (
-                        <p className="text-sm text-slate-500 line-clamp-2 mb-3">{course.description}</p>
+
+                      {subPct !== null && (
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="flex-1 bg-slate-100 rounded-full h-1.5">
+                            <div
+                              className={"h-1.5 rounded-full " + (subPct === 100 ? "bg-emerald-500" : "bg-[#C8102E]")}
+                              style={{ width: subPct + "%" }}
+                            />
+                          </div>
+                          <span className="text-xs text-slate-500 flex-shrink-0">{doneSubs}/{totalSubs} modules</span>
+                        </div>
                       )}
-                      <div className="flex items-center justify-between">
+
+                      <div className="flex items-center justify-between mt-2">
                         {statusBadge(status)}
-                        {course.duration && (
-                          <span className="text-xs text-slate-400">{course.duration} min</span>
-                        )}
+                        {course.duration && <span className="text-xs text-slate-400">{course.duration} min</span>}
                       </div>
                     </Link>
                   );

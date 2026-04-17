@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import TalentEditForm from "./TalentEditForm";
 import LifecycleEventForm from "./LifecycleEventForm";
+import CalloutManager from "./CalloutManager";
 
 const lifecycleIcons: Record<string, string> = {
   HIRED: "🎉", PROMOTED: "🚀", DEPARTMENT_CHANGE: "🔄",
@@ -18,6 +19,7 @@ export default async function AdminTalentDetailPage({ params }: { params: Promis
     include: {
       courseProgress: { include: { course: true }, orderBy: { completedAt: "desc" } },
       lifecycleEvents: { orderBy: { date: "desc" } },
+      callouts: { orderBy: { date: "desc" } },
     },
   });
 
@@ -103,6 +105,27 @@ export default async function AdminTalentDetailPage({ params }: { params: Promis
             </ol>
           )}
           <LifecycleEventForm talentId={talent.id} />
+        </div>
+
+        {/* Callouts */}
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 md:col-span-2">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="font-semibold text-slate-900">Callouts & Absences</h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {talent.callouts.length} total · {talent.callouts.filter(c => new Date(c.date) >= new Date(Date.now() - 30 * 86400000)).length} in last 30 days
+              </p>
+            </div>
+          </div>
+          <CalloutManager
+            talentId={talent.id}
+            callouts={talent.callouts.map((c) => ({
+              id: c.id,
+              date: c.date.toISOString(),
+              type: c.type,
+              reason: c.reason,
+            }))}
+          />
         </div>
       </div>
     </div>

@@ -26,10 +26,12 @@ model User {
   larkId     String?
 
   // Relations
-  courseProgress  CourseProgress[]
-  lifecycleEvents LifecycleEvent[]
-  adminTasks      AdminTask[]      @relation("AssignedTo")
-  createdTasks    AdminTask[]      @relation("CreatedBy")
+  courseProgress    CourseProgress[]
+  lifecycleEvents   LifecycleEvent[]
+  adminTasks        AdminTask[]         @relation("AssignedTo")
+  createdTasks      AdminTask[]         @relation("CreatedBy")
+  callouts          Callout[]
+  subCourseProgress SubCourseProgress[]
 
   @@map("users")
 }
@@ -48,7 +50,8 @@ model Course {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  progress CourseProgress[]
+  progress   CourseProgress[]
+  subCourses SubCourse[]
 
   @@map("courses")
 }
@@ -68,6 +71,48 @@ model CourseProgress {
 
   @@unique([userId, courseId])
   @@map("course_progress")
+}
+
+model SubCourse {
+  id          String   @id @default(cuid())
+  courseId    String
+  title       String
+  description String?
+  order       Int      @default(0)
+  url         String?
+  createdAt   DateTime @default(now())
+
+  course   Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  progress SubCourseProgress[]
+
+  @@map("sub_courses")
+}
+
+model SubCourseProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  subCourseId String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subCourse SubCourse @relation(fields: [subCourseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subCourseId])
+  @@map("sub_course_progress")
+}
+
+model Callout {
+  id        String   @id @default(cuid())
+  userId    String
+  date      DateTime
+  reason    String?
+  type      String   @default("CALLOUT") // CALLOUT | ABSENT | LATE
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("callouts")
 }
 
 model LifecycleEvent {

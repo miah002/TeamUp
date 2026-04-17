@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import CourseForm from "./CourseForm";
+import SubCourseManager from "./SubCourseManager";
 
 export default async function AdminCourseEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -9,7 +10,7 @@ export default async function AdminCourseEditPage({ params }: { params: Promise<
 
   const course = isNew
     ? null
-    : await prisma.course.findUnique({ where: { id } });
+    : await prisma.course.findUnique({ where: { id }, include: { subCourses: { orderBy: { order: "asc" } } } });
 
   if (!isNew && !course) notFound();
 
@@ -43,6 +44,18 @@ export default async function AdminCourseEditPage({ params }: { params: Promise<
               : null
           }
         />
+        {course && (
+          <SubCourseManager
+            courseId={course.id}
+            subCourses={course.subCourses.map((s) => ({
+              id: s.id,
+              title: s.title,
+              description: s.description,
+              url: s.url,
+              order: s.order,
+            }))}
+          />
+        )}
       </div>
     </div>
   );

@@ -25,7 +25,6 @@ async function main() {
       status: "ACTIVE",
     },
   });
-  console.log("Admin created:", admin.email);
 
   const talentPassword = await bcrypt.hash("talent1234", 10);
 
@@ -63,8 +62,26 @@ async function main() {
     },
   });
 
-  console.log("Sample talents created:", talent1.email, talent2.email);
+  const talent3 = await prisma.user.upsert({
+    where: { email: "anna@teamup.com" },
+    update: {},
+    create: {
+      email: "anna@teamup.com",
+      name: "Anna Reyes",
+      password: talentPassword,
+      role: "TALENT",
+      position: "VA",
+      department: "Operations",
+      status: "ACTIVE",
+      phone: "+63 918 111 2222",
+      startDate: new Date("2025-09-01"),
+      bio: "New team member still completing onboarding.",
+    },
+  });
 
+  console.log("Users created.");
+
+  // Courses
   const courses = await Promise.all([
     prisma.course.upsert({
       where: { id: "course-onboarding-101" },
@@ -86,7 +103,7 @@ async function main() {
       create: {
         id: "course-client-comm",
         title: "Client Communication Excellence",
-        description: "Master professional communication with international clients — tone, email etiquette, and escalation handling.",
+        description: "Master professional communication with international clients.",
         category: "Soft Skills",
         duration: 60,
         isRequired: true,
@@ -100,7 +117,7 @@ async function main() {
       create: {
         id: "course-lark-basics",
         title: "Lark Suite Fundamentals",
-        description: "Learn to use Lark for messaging, docs, meetings, and base — our primary collaboration platform.",
+        description: "Learn to use Lark for messaging, docs, meetings, and base.",
         category: "Technical",
         duration: 30,
         isRequired: true,
@@ -113,7 +130,7 @@ async function main() {
       create: {
         id: "course-time-mgmt",
         title: "Time Management for VAs",
-        description: "Practical techniques for managing multiple clients, deadlines, and priorities as a virtual assistant.",
+        description: "Practical techniques for managing multiple clients, deadlines, and priorities.",
         category: "Soft Skills",
         duration: 40,
         isRequired: false,
@@ -126,7 +143,7 @@ async function main() {
       create: {
         id: "course-social-media",
         title: "Social Media Management",
-        description: "Content scheduling, community management, analytics, and platform best practices for Instagram, Facebook, and LinkedIn.",
+        description: "Content scheduling, community management, analytics, and platform best practices.",
         category: "Technical",
         duration: 90,
         isRequired: false,
@@ -139,7 +156,7 @@ async function main() {
       create: {
         id: "course-data-privacy",
         title: "Data Privacy & Security",
-        description: "Understanding PDPA, client confidentiality, secure password practices, and data handling protocols.",
+        description: "Understanding PDPA, client confidentiality, and data handling protocols.",
         category: "Compliance",
         duration: 35,
         isRequired: true,
@@ -147,9 +164,46 @@ async function main() {
       },
     }),
   ]);
-
   console.log(`${courses.length} courses created.`);
 
+  // Sub-courses for Onboarding 101
+  const onboardingSubs = [
+    { id: "sub-onb-1", courseId: "course-onboarding-101", title: "Company Values & Culture", order: 1 },
+    { id: "sub-onb-2", courseId: "course-onboarding-101", title: "Tools Overview (Lark, Slack, Email)", order: 2 },
+    { id: "sub-onb-3", courseId: "course-onboarding-101", title: "Communication Standards", order: 3 },
+    { id: "sub-onb-4", courseId: "course-onboarding-101", title: "Your First 30 Days Roadmap", order: 4 },
+  ];
+  // Sub-courses for Client Communication
+  const clientCommSubs = [
+    { id: "sub-cc-1", courseId: "course-client-comm", title: "Professional Email Writing", order: 1 },
+    { id: "sub-cc-2", courseId: "course-client-comm", title: "Active Listening Techniques", order: 2 },
+    { id: "sub-cc-3", courseId: "course-client-comm", title: "Handling Difficult Conversations", order: 3 },
+    { id: "sub-cc-4", courseId: "course-client-comm", title: "Response Time Standards", order: 4 },
+    { id: "sub-cc-5", courseId: "course-client-comm", title: "Escalation Procedures", order: 5 },
+  ];
+  // Sub-courses for Lark
+  const larkSubs = [
+    { id: "sub-lark-1", courseId: "course-lark-basics", title: "Lark Messaging & Channels", order: 1 },
+    { id: "sub-lark-2", courseId: "course-lark-basics", title: "Lark Docs & Wiki", order: 2 },
+    { id: "sub-lark-3", courseId: "course-lark-basics", title: "Lark Meetings & Calendar", order: 3 },
+  ];
+  // Sub-courses for Data Privacy
+  const dataSubs = [
+    { id: "sub-dp-1", courseId: "course-data-privacy", title: "Understanding PDPA", order: 1 },
+    { id: "sub-dp-2", courseId: "course-data-privacy", title: "Client Confidentiality", order: 2 },
+    { id: "sub-dp-3", courseId: "course-data-privacy", title: "Secure Password Practices", order: 3 },
+  ];
+
+  for (const sub of [...onboardingSubs, ...clientCommSubs, ...larkSubs, ...dataSubs]) {
+    await prisma.subCourse.upsert({
+      where: { id: sub.id },
+      update: {},
+      create: { id: sub.id, courseId: sub.courseId, title: sub.title, order: sub.order },
+    });
+  }
+  console.log("Sub-courses created.");
+
+  // Course progress for talent1 (Maria)
   await prisma.courseProgress.upsert({
     where: { userId_courseId: { userId: talent1.id, courseId: "course-onboarding-101" } },
     update: {},
@@ -166,15 +220,57 @@ async function main() {
     create: { userId: talent1.id, courseId: "course-lark-basics", status: "IN_PROGRESS", startedAt: new Date("2024-01-20") },
   });
 
+  // Sub-course progress for Maria (all onboarding done, 3/5 client comm, 1/3 lark)
+  for (const sub of onboardingSubs) {
+    await prisma.subCourseProgress.upsert({
+      where: { userId_subCourseId: { userId: talent1.id, subCourseId: sub.id } },
+      update: {},
+      create: { userId: talent1.id, subCourseId: sub.id, completed: true, completedAt: new Date("2024-01-17") },
+    });
+  }
+  for (const sub of clientCommSubs.slice(0, 3)) {
+    await prisma.subCourseProgress.upsert({
+      where: { userId_subCourseId: { userId: talent1.id, subCourseId: sub.id } },
+      update: {},
+      create: { userId: talent1.id, subCourseId: sub.id, completed: true, completedAt: new Date("2024-01-19") },
+    });
+  }
+  for (const sub of larkSubs.slice(0, 1)) {
+    await prisma.subCourseProgress.upsert({
+      where: { userId_subCourseId: { userId: talent1.id, subCourseId: sub.id } },
+      update: {},
+      create: { userId: talent1.id, subCourseId: sub.id, completed: true, completedAt: new Date("2024-01-21") },
+    });
+  }
+
+  // Lifecycle events
   const lifecycleData = [
     { userId: talent1.id, type: "HIRED", title: "Joined TeamUp as VA Specialist", date: new Date("2024-01-15"), description: "First day with TeamUp! Welcome to the team, Maria." },
     { userId: talent1.id, type: "RECOGNITION", title: "Top Performer — Q1 2024", date: new Date("2024-04-01"), description: "Recognized for excellent client feedback and 100% on-time delivery." },
     { userId: talent2.id, type: "HIRED", title: "Joined TeamUp as VA", date: new Date("2023-06-01"), description: null },
     { userId: talent2.id, type: "PROMOTED", title: "Promoted to Senior VA", date: new Date("2024-01-01"), description: "Promoted after 6 months of outstanding performance." },
+    { userId: talent3.id, type: "HIRED", title: "Joined TeamUp as VA", date: new Date("2025-09-01"), description: null },
   ];
   for (const ev of lifecycleData) {
     await prisma.lifecycleEvent.create({ data: ev });
   }
+
+  // Callouts for EWS demo - talent3 (Anna) has many callouts, talent2 has some
+  const now = new Date();
+  const calloutData = [
+    { userId: talent3.id, date: new Date(now - 2 * 86400000), type: "ABSENT", reason: "No show, unexcused" },
+    { userId: talent3.id, date: new Date(now - 5 * 86400000), type: "CALLOUT", reason: "Called in sick" },
+    { userId: talent3.id, date: new Date(now - 8 * 86400000), type: "ABSENT", reason: "No show" },
+    { userId: talent3.id, date: new Date(now - 12 * 86400000), type: "LATE", reason: "1 hour late" },
+    { userId: talent3.id, date: new Date(now - 15 * 86400000), type: "CALLOUT", reason: "Called in sick again" },
+    { userId: talent2.id, date: new Date(now - 7 * 86400000), type: "LATE", reason: "30 minutes late" },
+    { userId: talent2.id, date: new Date(now - 20 * 86400000), type: "CALLOUT", reason: "Family emergency" },
+    { userId: talent2.id, date: new Date(now - 25 * 86400000), type: "CALLOUT", reason: "Sick" },
+  ];
+  for (const c of calloutData) {
+    await prisma.callout.create({ data: c });
+  }
+  console.log("Callout data created.");
 
   await prisma.adminTask.create({
     data: {
@@ -188,10 +284,10 @@ async function main() {
   });
 
   console.log("\nSeed complete!");
-  console.log("Login credentials:");
   console.log("  Admin:  admin@teamup.com  /  admin1234");
   console.log("  Talent: maria@teamup.com  /  talent1234");
   console.log("  Talent: juan@teamup.com   /  talent1234");
+  console.log("  Talent: anna@teamup.com   /  talent1234");
 }
 
 main()
