@@ -276,41 +276,52 @@ async function main() {
     // Randy (19) — newest, not started
   ];
 
+  // Map courseId → its sub-courses
+  const subCoursesMap = {
+    "course-onboarding-101": onboardingSubs,
+    "course-client-comm":    clientCommSubs,
+    "course-lark-basics":    larkSubs,
+    "course-data-privacy":   dataSubs,
+    "course-time-mgmt":      [],
+    "course-social-media":   [],
+  };
+
   const now = Date.now();
   for (const [idx, courseId, status, daysStart, daysComplete] of progressData) {
     const talent = talents[idx];
     const startedAt = new Date(now - daysStart * 86400000);
     const completedAt = daysComplete !== null ? new Date(now - daysComplete * 86400000) : null;
+
     await prisma.courseProgress.upsert({
       where: { userId_courseId: { userId: talent.id, courseId } },
       update: {},
       create: { userId: talent.id, courseId, status, startedAt, completedAt },
     });
-  }
-  console.log("Course progress seeded.");
 
-  // Sub-course progress for Maria (0) — all onboarding, 3/5 client comm, 1/3 lark
-  for (const sub of onboardingSubs) {
-    await prisma.subCourseProgress.upsert({
-      where: { userId_subCourseId: { userId: talents[0].id, subCourseId: sub.id } },
-      update: {},
-      create: { userId: talents[0].id, subCourseId: sub.id, completed: true, completedAt: new Date(now - 450 * 86400000) },
-    });
+    // Auto-create matching sub-course progress
+    const subs = subCoursesMap[courseId] || [];
+    if (status === "COMPLETED") {
+      // All sub-courses done
+      for (const sub of subs) {
+        await prisma.subCourseProgress.upsert({
+          where: { userId_subCourseId: { userId: talent.id, subCourseId: sub.id } },
+          update: {},
+          create: { userId: talent.id, subCourseId: sub.id, completed: true, completedAt },
+        });
+      }
+    } else if (status === "IN_PROGRESS" && subs.length > 0) {
+      // First half of sub-courses done
+      const half = Math.max(1, Math.floor(subs.length / 2));
+      for (const sub of subs.slice(0, half)) {
+        await prisma.subCourseProgress.upsert({
+          where: { userId_subCourseId: { userId: talent.id, subCourseId: sub.id } },
+          update: {},
+          create: { userId: talent.id, subCourseId: sub.id, completed: true, completedAt: new Date(now - (daysStart - 1) * 86400000) },
+        });
+      }
+    }
   }
-  for (const sub of clientCommSubs.slice(0, 3)) {
-    await prisma.subCourseProgress.upsert({
-      where: { userId_subCourseId: { userId: talents[0].id, subCourseId: sub.id } },
-      update: {},
-      create: { userId: talents[0].id, subCourseId: sub.id, completed: true, completedAt: new Date(now - 448 * 86400000) },
-    });
-  }
-  for (const sub of larkSubs.slice(0, 1)) {
-    await prisma.subCourseProgress.upsert({
-      where: { userId_subCourseId: { userId: talents[0].id, subCourseId: sub.id } },
-      update: {},
-      create: { userId: talents[0].id, subCourseId: sub.id, completed: true, completedAt: new Date(now - 440 * 86400000) },
-    });
-  }
+  console.log("Course progress and sub-course progress seeded.");
 
   // Lifecycle events
   const lifecycleData = [
