@@ -34,7 +34,7 @@ export default function CourseCard({
   courseId, title, category, catColor, isRequired, duration, status,
   subCourses, doneSubs, totalSubs,
 }: CourseCardProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const subPct = totalSubs > 0 ? Math.round((doneSubs / totalSubs) * 100) : null;
 
   return (
