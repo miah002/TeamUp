@@ -37,9 +37,13 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-0 mb-4">
-            <span className="text-5xl font-extrabold text-[#1B1F3B] tracking-tight leading-none">tm</span>
-            <span className="text-5xl font-extrabold text-[#C8102E] tracking-tight leading-none">up</span>
+          <div className="flex items-center justify-center mb-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="TeamUp" className="h-16 w-auto" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; (e.currentTarget.nextElementSibling as HTMLElement | null)?.style.setProperty("display", "flex"); }} />
+            <div className="items-center gap-0 hidden">
+              <span className="text-5xl font-extrabold text-[#1B1F3B] tracking-tight leading-none">tm</span>
+              <span className="text-5xl font-extrabold text-[#C8102E] tracking-tight leading-none">up</span>
+            </div>
           </div>
           <p className="text-slate-500 text-sm mt-1">Talents Portal — Sign in to your account</p>
         </div>

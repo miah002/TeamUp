@@ -123,8 +123,10 @@ export default function Sidebar({
       {/* Brand */}
       <div className="px-5 py-5 border-b border-slate-100">
         <div className="flex items-center gap-3">
-          {/* tmup logo text */}
-          <div className="flex items-center leading-none select-none">
+          {/* TeamUp logo */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="TeamUp" className="h-8 w-auto" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; (e.currentTarget.nextElementSibling as HTMLElement | null)?.style.setProperty("display", "flex"); }} />
+          <div className="items-center leading-none select-none hidden">
             <span className="text-2xl font-extrabold text-[#1B1F3B] tracking-tight">tm</span>
             <span className="text-2xl font-extrabold text-[#C8102E] tracking-tight">up</span>
           </div>
