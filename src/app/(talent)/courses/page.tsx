@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
+import CourseCard from "./CourseCard";
 
 const categoryColors: Record<string, string> = {
   Onboarding: "bg-blue-100 text-blue-700",
@@ -12,22 +12,17 @@ const categoryColors: Record<string, string> = {
   General: "bg-slate-100 text-slate-600",
 };
 
-function statusBadge(status: string) {
-  if (status === "COMPLETED")
-    return <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Completed</span>;
-  if (status === "IN_PROGRESS")
-    return <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">In Progress</span>;
-  return <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">Not Started</span>;
-}
-
 export default async function CoursesPage() {
   const session = await getServerSession(authOptions);
   if (!session) return null;
 
   const courses = await prisma.course.findMany({
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-    include: { subCourses: { select: { id: true } } },
+    include: {
+      subCourses: { orderBy: { order: "asc" }, select: { id: true, title: true, order: true } },
+    },
   });
+
   const progress = await prisma.courseProgress.findMany({ where: { userId: session.user.id } });
   const subProgress = await prisma.subCourseProgress.findMany({
     where: { userId: session.user.id, completed: true },
@@ -42,7 +37,7 @@ export default async function CoursesPage() {
     <div className="p-8 max-w-5xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-900">Training & Courses</h1>
-        <p className="text-slate-500 mt-1">All available training materials and courses for TeamUp talents.</p>
+        <p className="text-slate-500 mt-1">Click a course to see its modules. Open the course to track your progress.</p>
       </div>
 
       <div className="bg-[#C8102E] rounded-xl p-5 text-white mb-8 flex gap-8">
@@ -68,50 +63,33 @@ export default async function CoursesPage() {
       ) : (
         categories.map((cat) => {
           const catCourses = courses.filter((c) => (c.category ?? "General") === cat);
+          const catColor = categoryColors[cat] ?? categoryColors.General;
           return (
             <div key={cat} className="mb-8">
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">{cat}</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {catCourses.map((course) => {
                   const status = progressMap[course.id] ?? "NOT_STARTED";
-                  const catColor = categoryColors[cat] ?? categoryColors.General;
-                  const totalSubs = course.subCourses.length;
                   const doneSubs = course.subCourses.filter((s) => completedSubIds.has(s.id)).length;
-                  const subPct = totalSubs > 0 ? Math.round((doneSubs / totalSubs) * 100) : null;
-
+                  const subCoursesForCard = course.subCourses.map((s) => ({
+                    id: s.id,
+                    title: s.title,
+                    completed: completedSubIds.has(s.id),
+                  }));
                   return (
-                    <Link
+                    <CourseCard
                       key={course.id}
-                      href={"/courses/" + course.id}
-                      className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-red-200 transition-all group"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <span className={"text-xs font-medium px-2 py-0.5 rounded-full " + catColor}>{cat}</span>
-                        {course.isRequired && (
-                          <span className="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Required</span>
-                        )}
-                      </div>
-                      <h3 className="font-semibold text-slate-900 group-hover:text-[#a50d26] transition-colors mb-1">
-                        {course.title}
-                      </h3>
-
-                      {subPct !== null && (
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="flex-1 bg-slate-100 rounded-full h-1.5">
-                            <div
-                              className={"h-1.5 rounded-full " + (subPct === 100 ? "bg-emerald-500" : "bg-[#C8102E]")}
-                              style={{ width: subPct + "%" }}
-                            />
-                          </div>
-                          <span className="text-xs text-slate-500 flex-shrink-0">{doneSubs}/{totalSubs} modules</span>
-                        </div>
-                      )}
-
-                      <div className="flex items-center justify-between mt-2">
-                        {statusBadge(status)}
-                        {course.duration && <span className="text-xs text-slate-400">{course.duration} min</span>}
-                      </div>
-                    </Link>
+                      courseId={course.id}
+                      title={course.title}
+                      category={cat}
+                      catColor={catColor}
+                      isRequired={course.isRequired}
+                      duration={course.duration}
+                      status={status}
+                      subCourses={subCoursesForCard}
+                      doneSubs={doneSubs}
+                      totalSubs={course.subCourses.length}
+                    />
                   );
                 })}
               </div>
