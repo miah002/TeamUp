@@ -12,22 +12,55 @@ interface SubCourse {
   completed: boolean;
 }
 
-export default function SubCourseList({ subCourses }: { subCourses: SubCourse[] }) {
+export default function SubCourseList({
+  subCourses,
+  courseId,
+  courseStatus,
+}: {
+  subCourses: SubCourse[];
+  courseId: string;
+  courseStatus: string;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
   const [local, setLocal] = useState<Record<string, boolean>>(
     Object.fromEntries(subCourses.map((s) => [s.id, s.completed]))
   );
 
+  async function updateCourseStatus(status: string) {
+    await fetch("/api/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseId, status }),
+    });
+  }
+
   async function toggle(id: string) {
     const next = !local[id];
-    setLocal((prev) => ({ ...prev, [id]: next }));
+    const newLocal = { ...local, [id]: next };
+    setLocal(newLocal);
     setLoading(id);
+
     await fetch("/api/subcourse-progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subCourseId: id, completed: next }),
     });
+
+    const doneCount = Object.values(newLocal).filter(Boolean).length;
+    const total = subCourses.length;
+
+    if (doneCount === total) {
+      // All modules checked → auto-complete the course
+      await updateCourseStatus("COMPLETED");
+    } else if (doneCount > 0 && courseStatus === "NOT_STARTED") {
+      // First module checked → auto-start the course
+      await updateCourseStatus("IN_PROGRESS");
+    } else if (!next && courseStatus === "COMPLETED") {
+      // Unchecked a module while course was completed → revert to in progress
+      await updateCourseStatus("IN_PROGRESS");
+    }
+
     setLoading(null);
     router.refresh();
   }
@@ -38,7 +71,6 @@ export default function SubCourseList({ subCourses }: { subCourses: SubCourse[] 
 
   return (
     <div>
-      {/* Progress bar */}
       <div className="flex items-center gap-3 mb-4">
         <div className="flex-1 bg-slate-100 rounded-full h-2">
           <div

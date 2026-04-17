@@ -82,7 +82,11 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
           </div>
         )}
 
-        <CourseProgressButtons courseId={course.id} currentStatus={status} />
+        <CourseProgressButtons
+          courseId={course.id}
+          currentStatus={status}
+          subCourseIds={course.subCourses.map((s) => s.id)}
+        />
 
         {progress?.completedAt && (
           <p className="text-xs text-slate-400 mt-3">
@@ -94,7 +98,11 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
       {subCoursesWithProgress.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-6 mb-6">
           <h2 className="font-semibold text-slate-900 mb-4">Course Modules</h2>
-          <SubCourseList subCourses={subCoursesWithProgress} />
+          <SubCourseList
+            subCourses={subCoursesWithProgress}
+            courseId={course.id}
+            courseStatus={status}
+          />
         </div>
       )}
 

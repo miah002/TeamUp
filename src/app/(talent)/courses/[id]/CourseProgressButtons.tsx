@@ -6,12 +6,26 @@ import { useRouter } from "next/navigation";
 export default function CourseProgressButtons({
   courseId,
   currentStatus,
+  subCourseIds = [],
 }: {
   courseId: string;
   currentStatus: string;
+  subCourseIds?: string[];
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  async function completeAllSubCourses() {
+    await Promise.all(
+      subCourseIds.map((subCourseId) =>
+        fetch("/api/subcourse-progress", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ subCourseId, completed: true }),
+        })
+      )
+    );
+  }
 
   async function updateStatus(status: string) {
     setLoading(true);
@@ -20,6 +34,10 @@ export default function CourseProgressButtons({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ courseId, status }),
     });
+    // When marking complete, also check off all modules
+    if (status === "COMPLETED" && subCourseIds.length > 0) {
+      await completeAllSubCourses();
+    }
     setLoading(false);
     router.refresh();
   }
@@ -52,7 +70,7 @@ export default function CourseProgressButtons({
           disabled={loading}
           className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-60"
         >
-          Mark as Completed
+          {loading ? "Saving..." : "Mark as Completed"}
         </button>
         <span className="text-xs text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded-full">In Progress</span>
       </div>
