@@ -9,8 +9,48 @@ Sheets) for audit.
 Files in this folder:
 
 - `README.md` — this design document (architecture, prompts, edge cases).
-- `answer-key.example.json` — shape of the answer key used by the workflow.
+- `answer-key.json` — current live rubric (SA Q2 2026 Assessment).
+- `answer-key.example.json` — generic schema reference.
+- `source/` — raw CSV exports from Lark used to regenerate the answer key.
 - `../../n8n/trainee-evaluation-workflow.json` — importable n8n workflow.
+
+## Current deployment (SA Q2 2026)
+
+- Base: `R0XnbNkwdaY4A1sNPcklT2MTgqe`
+- Submissions + results table (copy for automation): `tblnGRAlrjXQhfRO`
+- Form: `TeamUp | Homecare Scheduling Assistant`
+- 23 questions total (11 exact, 12 scenario graded by LLM)
+- Passing threshold: 75% → 17.25 / 23
+
+### Deployment checklist
+
+1. In n8n, set environment variables:
+   - `LARK_APP_ID=cli_a96b43250df9deea`
+   - `LARK_APP_SECRET=<from Lark Developer Console>`
+   - `LARK_BASE_APP=R0XnbNkwdaY4A1sNPcklT2MTgqe`
+   - `LARK_SUBMISSIONS_TABLE=tblnGRAlrjXQhfRO`
+2. In n8n, add OpenAI credentials on the `LLM: grade scenario` node.
+3. In n8n, add SMTP credentials on the two `Email:` nodes (or swap them for
+   a Lark Mail HTTP Request node).
+4. Import `../../n8n/trainee-evaluation-workflow.json`. Activate it.
+5. Copy the webhook production URL from n8n.
+6. In Lark Base `tblnGRAlrjXQhfRO` → **Automations** → **Create**:
+   - Trigger: *When a record is created*
+   - Action: *Send a webhook* → paste the n8n URL → send record fields as body.
+7. Submit one test row through the form. Confirm:
+   - `TOTAL`, `RESULTS`, and the 23 per-question score cells are filled.
+   - The candidate receives the pass or fail email.
+   - n8n execution log shows no errors.
+
+### Updating the rubric
+
+Scenario rubrics in `answer-key.json` are flagged with
+`"needs_trainer_review": true` — placeholders the LLM can still use, but the
+trainers should replace `expected_points` / `required_keywords` with their
+real criteria. After editing `answer-key.json`:
+
+1. Re-import `n8n/trainee-evaluation-workflow.json` into n8n, OR
+2. Paste the updated JSON directly into the `Load answer key` Code node.
 
 ---
 

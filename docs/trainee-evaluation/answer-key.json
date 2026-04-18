@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "passing_percent": 75,
+  "source_table_id": "tblnGRAlrjXQhfRO",
+  "source_app_token": "R0XnbNkwdaY4A1sNPcklT2MTgqe",
+  "fields": {
+    "name": "COMPLETE NAME",
+    "email": "ACTIVE EMAIL ADDRESS",
+    "total": "TOTAL",
+    "result": "RESULTS"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "type": "exact",
+      "field_name": "This is where you can easily view open visits on a specific day or date range that you can offer to a caregiver asking for available shifts.",
+      "score_field": "1 (Caregiver Pivot)",
+      "expected": "C. Caregiver Pivot",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q2",
+      "type": "exact",
+      "field_name": "This is how you send out a shift to recommended caregivers.",
+      "score_field": "2 Sent Out",
+      "expected": "D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q3",
+      "type": "exact",
+      "field_name": "This is where you can view the visits requested or picked up by the caregivers from the shifts we sent out via the AxisCare app.",
+      "score_field": "3 (Alerts ST)",
+      "expected": "C. Alerts Sub-tab",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q4",
+      "type": "exact",
+      "field_name": "This feature in WellSky is useful when searching for caregivers to fill shifts for clients. It allows you to filter for caregivers who fulfill specific criteria needed by clients for a particular shift. You can also mass message caregivers and fill shifts in real time.",
+      "score_field": "4 (CareFinder)",
+      "expected": "D. CareFinder",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q5",
+      "type": "exact",
+      "field_name": "These are basic activities required for taking care of oneself. These include things such as bathing, toileting, continence, dressing, feeding and mobility.",
+      "score_field": "5 (ADLs)",
+      "expected": "A. Activities of Daily Living",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q6",
+      "type": "exact",
+      "field_name": "These are activities that enable an individual to live independently within the community. These Include such things as housekeeping/cleaning, laundry, money management, meal preparation, medication management and shopping/transportation.",
+      "score_field": "6 (IADLs)",
+      "expected": "B. Instrumental Activities of Daily Living",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q7",
+      "type": "exact",
+      "field_name": "What are the usual tags to include for a call log?",
+      "score_field": "7 (A)",
+      "expected": "A. Client, Caregiver, User, Category",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q8",
+      "type": "exact",
+      "field_name": "The scheduler called the client to inform that the aide will not be able to attend to her shift that night due to a fire incident in their apartment complex and she is still cleaning up their unit, as advised by the caregiver. The client acknowledged and stated that they do not need any aide replacement since their daughter is at home.",
+      "score_field": "8 (No)",
+      "expected": "No",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q9",
+      "type": "exact",
+      "field_name": "Mr. Parker called to ask the mobile number of his caregiver yesterday since he needs to discuss some errands for tomorrow. The scheduler acknowledged and ended the call by providing the caregiver's number to the client. This is to ensure that all information needed will be explained well to the caregiver",
+      "score_field": "9 (No)",
+      "expected": "No",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q10",
+      "type": "exact",
+      "field_name": "Your office/admin partners advised the team to remove a certain caregiver from a case due to being unreliable and deemed not fit for the case. The scheduler updated the calendar of the aide and informed her that there have been schedule changes and we'll keep her posted for updates.",
+      "score_field": "10 (Yes)",
+      "expected": "Yes",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q11",
+      "type": "exact",
+      "field_name": "Client requested to not have the caregiver she had yesterday moving forward. Client stated that the aide keeps on using her phone during her shift. The scheduler put a client block on the aide's profile and did not inform the caregiver.",
+      "score_field": "11 (No)",
+      "expected": "No",
+      "weight": 1,
+      "normalize": "trim_lower"
+    },
+    {
+      "id": "q12",
+      "type": "scenario",
+      "field_name": "Given the following image reference, create an SMS response and acknowledge the caregiver who called off.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text",
+      "score_field": "12 (CG LMCO)",
+      "prompt": "Caregiver Daniel called at 6 PM on Fri May 2 to say he cannot make tonight's visit with client Harold due to a car problem. Write an SMS to Daniel acknowledging the call-off.",
+      "expected_points": [
+        "addresses the caregiver by name (Daniel)",
+        "acknowledges the reason (car problem)",
+        "confirms receipt of the call-off",
+        "professional and empathetic tone",
+        "mentions looking for a replacement or next steps"
+      ],
+      "required_keywords": ["daniel"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q13",
+      "type": "scenario",
+      "field_name": "Given the following image reference, create an SMS spiel to ask outgoing caregiver if they can extend.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem.-Text",
+      "score_field": "13 (Extend)",
+      "prompt": "Daniel (scheduled for tonight) called off due to a car problem. Write an SMS to the OUTGOING caregiver asking if they can extend their shift to cover.",
+      "expected_points": [
+        "polite professional greeting to the outgoing caregiver",
+        "briefly explains the situation (incoming CG cannot make it)",
+        "asks whether they can extend",
+        "mentions the shift timeframe or end time",
+        "shows appreciation for considering"
+      ],
+      "required_keywords": ["extend"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q14",
+      "type": "scenario",
+      "field_name": "Given the following image reference, create an SMS spiel to offer the open visit to our caregivers.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled 8PM - 8AM visit later tonight due car problem.-Text",
+      "score_field": "14 (Open Visit)",
+      "prompt": "Daniel called off his 8 PM - 8 AM visit tonight. Write an SMS broadcast offering this open visit to other caregivers.",
+      "expected_points": [
+        "clear statement that there is an open visit",
+        "includes the shift times (8 PM - 8 AM)",
+        "includes the date (May 2nd / tonight / Friday)",
+        "asks for confirmation / reply if interested",
+        "professional tone"
+      ],
+      "required_keywords": ["8"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q15",
+      "type": "scenario",
+      "field_name": "Given the following image reference, create an SMS spiel to inform the client that caregiver called off and we're still looking for a replacement.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text",
+      "score_field": "15 (Search)",
+      "prompt": "Daniel called off tonight's visit with Harold. Write an SMS to client Harold or his son Paul informing them of the call-off and that a replacement is being searched for.",
+      "expected_points": [
+        "addresses client/family by name (Harold or Paul)",
+        "informs the caregiver cannot make it",
+        "states a replacement is being searched for",
+        "apologizes or expresses empathy for the inconvenience",
+        "commits to providing an update"
+      ],
+      "required_keywords": ["replacement"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q16",
+      "type": "scenario",
+      "field_name": "Given the following image reference, create an SMS spiel to update the client NO caregiver is available to pick up the shift-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text",
+      "score_field": "16 (No CG)",
+      "prompt": "After searching, no caregiver is available to cover Harold's visit tonight. Write an SMS to the client (Harold) or his son (Paul) informing them no replacement was found.",
+      "expected_points": [
+        "addresses client/family by name (Harold or Paul)",
+        "clearly states no caregiver is available",
+        "apologizes sincerely",
+        "suggests a next step or contact number",
+        "professional, empathetic tone"
+      ],
+      "required_keywords": ["no"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q17",
+      "type": "scenario",
+      "field_name": "Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) caregiver Annabel informed that she will be late for 30 minutes to highway traffic.-Text",
+      "score_field": "17 (CG Late)",
+      "prompt": "Annabel called to say she will be 30 minutes late on Fri May 2 due to highway traffic. Compose a group-chat update to the office admin partners.",
+      "expected_points": [
+        "names the caregiver (Annabel)",
+        "states she will be 30 minutes late",
+        "states the reason (highway traffic)",
+        "includes the date (May 2nd / Friday)",
+        "concise, admin-partner tone"
+      ],
+      "required_keywords": ["annabel", "30"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q18",
+      "type": "scenario",
+      "field_name": "Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: Client's son, Paul called to inform that he will take his father to a doctor's appointment and they don't need an aide on Sunday, May 4th.-Text",
+      "score_field": "18 (Visit Cancel)",
+      "prompt": "Paul (client's son) called to cancel the aide for Sun May 4 because he is taking his father to a doctor. Compose a group-chat update to the office admin partners.",
+      "expected_points": [
+        "names the responsible party (Paul) and relationship (son)",
+        "states visit cancellation for Sunday May 4",
+        "gives the reason (doctor's appointment)",
+        "notes no aide is needed that day",
+        "concise, admin-partner tone"
+      ],
+      "required_keywords": ["paul", "may 4"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q19",
+      "type": "scenario",
+      "field_name": "Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text",
+      "score_field": "19 (CG absent)",
+      "prompt": "Daniel called off tonight's visit with Harold due to a car problem. Compose a group-chat update to the office admin partners.",
+      "expected_points": [
+        "names the caregiver (Daniel) and client (Harold)",
+        "states call-off for tonight's visit",
+        "gives the reason (car problem)",
+        "notes a replacement is being sought",
+        "concise, admin-partner tone"
+      ],
+      "required_keywords": ["daniel", "harold"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q20",
+      "type": "scenario",
+      "field_name": "Update the shift memo/note based on the scenario.",
+      "score_field": "20 (Memo flu)",
+      "prompt": "Update the shift memo/note for a scenario involving a caregiver out with flu (see original scenario image/reference).",
+      "expected_points": [
+        "records the reason (flu / illness)",
+        "notes the date",
+        "identifies caregiver or client affected",
+        "states action taken (replacement or cancellation)",
+        "clear, factual, memo-style wording"
+      ],
+      "required_keywords": ["flu"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q21",
+      "type": "scenario",
+      "field_name": "Update the shift memo/note based on the scenario. 2",
+      "score_field": "21 (Memo Clock)",
+      "prompt": "Update the shift memo/note for a scenario involving a clock-in / clock-out issue (see original scenario image/reference).",
+      "expected_points": [
+        "records the clock-in or clock-out discrepancy",
+        "notes the date and time",
+        "identifies caregiver",
+        "states action taken or correction made",
+        "clear, factual, memo-style wording"
+      ],
+      "required_keywords": ["clock"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q22",
+      "type": "scenario",
+      "field_name": "Update the shift memo/note based on the scenario. 3",
+      "score_field": "22 (Extended)",
+      "prompt": "Update the shift memo/note for a scenario where a shift was extended (see original scenario image/reference).",
+      "expected_points": [
+        "records the extension",
+        "notes new end time or extra hours",
+        "identifies caregiver and client",
+        "notes reason for extension",
+        "clear, factual, memo-style wording"
+      ],
+      "required_keywords": ["extend"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    },
+    {
+      "id": "q23",
+      "type": "scenario",
+      "field_name": "OWN UNDERSTANDING | A client is exploring options to help cover the cost of ongoing homecare services. They mention having a Long-Term Care (LTC) insurance policy, while another client asks if they can use their Veterans Affairs (VA) benefits for similar services. What are the key differences between Long-Term Care insurance and Veterans Affairs (VA) benefits in terms usage for homecare services?",
+      "score_field": "23 (LTCI VA)",
+      "prompt": "Explain the key differences between Long-Term Care (LTC) insurance and Veterans Affairs (VA) benefits as they apply to paying for homecare services.",
+      "expected_points": [
+        "notes LTC insurance is a private policy purchased by the individual",
+        "notes VA benefits are government benefits for eligible veterans",
+        "mentions eligibility differences (anyone who qualifies vs veterans/spouses)",
+        "mentions coverage/usage differences (e.g., LTC often reimburses; VA may provide direct services or aid & attendance)",
+        "explanation is coherent and demonstrates understanding, not just keyword dropping"
+      ],
+      "required_keywords": ["ltc", "va"],
+      "weight": 1,
+      "max_score": 5,
+      "needs_trainer_review": true
+    }
+  ]
+}
