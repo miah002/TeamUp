@@ -1,0 +1,149 @@
+﻿Numbering,COMPLETE NAME,Submitted on,TOTAL,RESULTS,ACTIVE EMAIL ADDRESS,This is where you can easily view open visits on a specific day or date range that you can offer to a caregiver asking for available shifts.,This is how you send out a shift to recommended caregivers.,This is where you can view the visits requested or picked up by the caregivers from the shifts we sent out via the AxisCare app.,This feature in WellSky is useful when searching for caregivers to fill shifts for clients. It allows you to filter for caregivers who fulfill specific criteria needed by clients for a particular shift. You can also mass message caregivers and fill shifts in real time.,"These are basic activities required for taking care of oneself. These include things such as bathing, toileting, continence, dressing, feeding and mobility.","These are activities that enable an individual to live independently within the community. These Include such things as housekeeping/cleaning, laundry, money management, meal preparation, medication management and shopping/transportation.",What are the usual tags to include for a call log?,"The scheduler called the client to inform that the aide will not be able to attend to her shift that night due to a fire incident in their apartment complex and she is still cleaning up their unit, as advised by the caregiver. The client acknowledged and stated that they do not need any aide replacement since their daughter is at home.",Mr. Parker called to ask the mobile number of his caregiver yesterday since he needs to discuss some errands for tomorrow. The scheduler acknowledged and ended the call by providing the caregiver's number to the client. This is to ensure that all information needed will be explained well to the caregiver,Your office/admin partners advised the team to remove a certain caregiver from a case due to being unreliable and deemed not fit for the case. The scheduler updated the calendar of the aide and informed her that there have been schedule changes and we'll keep her posted for updates.,Client requested to not have the caregiver she had yesterday moving forward. Client stated that the aide keeps on using her phone during her shift. The scheduler put a client block on the aide's profile and did not inform the caregiver.,"Given the following image reference, create an SMS response and acknowledge the caregiver who called off.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text","Given the following image reference, create an SMS spiel to ask outgoing caregiver if they can extend.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem.-Text","Given the following image reference, create an SMS spiel to offer the open visit to our caregivers.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled 8PM - 8AM visit later tonight due car problem.-Text","Given the following image reference, create an SMS spiel to inform the client that caregiver called off and we're still looking for a replacement.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text","Given the following image reference, create an SMS spiel to update the client NO caregiver is available to pick up the shift-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text","Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) caregiver Annabel informed that she will be late for 30 minutes to highway traffic.-Text","Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: Client's son, Paul called to inform that he will take his father to a doctor's appointment and they don't need an aide on Sunday, May 4th.-Text","Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text",Update the shift memo/note based on the scenario.,Update the shift memo/note based on the scenario. 2,Update the shift memo/note based on the scenario. 3,"OWN UNDERSTANDING | A client is exploring options to help cover the cost of ongoing homecare services. They mention having a Long-Term Care (LTC) insurance policy, while another client asks if they can use their Veterans Affairs (VA) benefits for similar services. What are the key differences between Long-Term Care insurance and Veterans Affairs (VA) benefits in terms usage for homecare services?",1 (Caregiver Pivot),2 Sent Out,3 (Alerts ST),4 (CareFinder),5 (ADLs),6 (IADLs),7 (A),8 (No),9 (No),10 (Yes),11 (No),12 (CG LMCO),13 (Extend),14 (Open Visit),15 (Search),16 (No CG),17 (CG Late),18 (Visit Cancel),19 (CG absent),20 (Memo flu),21 (Memo Clock),22 (Extended),23 (LTCI VA)
+1,JC,2026/04/11,23,PASS,Kim,C. Caregiver Pivot,D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button,C. Alerts Sub-tab,D. CareFinder,A. Activities of Daily Living,B. Instrumental Activities of Daily Living,"A. Client, Caregiver, User, Category",No,No,Yes,No,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,SAMPLE,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+2,,2026/04/11,7.5,FAIL,,,,,D. CareFinder,,,,,,,,,,,,,,,,,,,,0,0,0,1,0,0,0,0,0,0,0,,0.5,1,1,1,1,1,0.5,0.5,,,
+3,dsblshgnsb,2026/04/11,0,FAIL,fgkdfjb,B. Client Pivot,B. Click open visit bar > Click Recommend > Sort Caregiver Distance > Hit Send Button,B. Alerts,B. Caregiver Search,C. Instrument of Activities,A. Activities of Daily Living,"B. Contact, Client, User, Category",Yes,Yes,No,Yes,bfb,fb,bgb,bgdb,fbb,,bgbg,bfbfdfb,bbb,bfb,bgb,bfbf,0,0,0,0,0,0,0,0,0,0,0,,,,,,,,,,,,
+4,"Llevado, Wilmark Jhon",2026/04/18,18.5,PASS,wilmarkl08@gmail.com,D. Unassigned Visits,D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button,C. Alerts Sub-tab,A. CareFilter,A. Activities of Daily Living,B. Instrumental Activities of Daily Living,"A. Client, Caregiver, User, Category",Yes,No,Yes,Yes,"Hi Daniel, 
+
+I'm sorry to hear about your car problem and thank you for informing us ahead of time. No worries, I will cancel your shift for tonight with Mr. Harold. 
+
+I also want to know if will you be able to attend your schedule with Mr. Harold the next day?
+
+Regards, 
+Wil
+",,"Hi Annabel, 
+
+I hope your shift was all good. I'm texting to check if you can cover for tonight's shift since Daniel reached out to me saying he wont make it for the night as his car had a problem. 
+
+Let me know what are your thoughts with my offer. 
+
+regards, 
+Wil ","Hi Harold and Paul, 
+ 
+This is Wil from Amada Senior Care. We wanted to let you know that the caregiver won’t be able to make it to his shift tonight due to a car issue. We’re currently working on finding a replacement and will keep you updated shortly. 
+
+Thank you for your understanding.","Hi Harold and Paul,
+
+I’m reaching out to update you that unfortunately, we were not able to secure a caregiver to cover the shift tonight.
+
+We sincerely apologize for the inconvenience. ","Hi team, 
+
+Caregiver Annabel reported she will be delayed by approximately 30 minutes for her shift today due to highway traffic. I have adjusted the schedule and will monitor her ETA. 
+
+Thanks.",,"Hi team, 
+
+The client’s son, Paul, called to inform that he will be taking his father to a doctor’s appointment on Sunday May 4th. Family confirmed they will not need an aide for that date.
+
+I have adjusted the client's schedule. ",Matthew called for a call off minute before duty due to Flu. Schedule has been updated. (Wil),Caregiver Matthew reported that he forgot to clock in at the start of his shift. He called to inform that he arrived on-site at 7:54 AM. Location verified via Geofence. ,"Caregiver Matthew extended his shift until 8:58 PM due to additional client support needs. During the extension, caregiver assisted the client with toileting and also picked up and provided dinner. All tasks were completed prior to clock-out. ","Based on the information provided in the modules, the key difference between Long-Term Care (LTC) insurance and Veterans Affairs (VA) benefits is how they are provided and who can access them. LTC insurance is a private insurance that is usually paid for by the client or their family. The coverage depends on the specific policy, so the benefits and services a client can use may vary from one plan to another. On the other hand, Veterans Affairs (VA) benefits are government-provided and are available to eligible veterans and sometimes their family members. Since it is government-funded, the coverage and benefits follow stricter eligibility requirements and guidelines.",0,1,1,0,1,1,1,0,1,1,0,1,0.5,1,1,1,1,1,1,1,1,1,1
+5,"Peras, Shemaiah Hannah",2026/04/18,20,PASS,perasshemaiah@gmail.com,D. Unassigned Visits,D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button,A. Open Visits,D. CareFinder,A. Activities of Daily Living,B. Instrumental Activities of Daily Living,"A. Client, Caregiver, User, Category",Yes,No,Yes,No,"Thanks again for giving us a heads-up. I’ve marked you as unavailable for today, and we’ll work on coverage. Please keep us updated on when your car is fixed or if anything changes with your schedule.",Are you available to extend your current shift with client Harold today? We have a need for additional coverage following your scheduled hours. Please let us know as soon as possible if you’re able to stay longer. Thank you!,"Hi ____, good morning/evening. Hope you’re having a great day! We’d like to confirm if you’re available to cover a (Shift time) with Mr/Mrs (Client Name) today/specific date. Please send us a message or call us back / Kindly keep us posted. Thank you!",Hi (Client’s name)!  I’m afraid ______ will not make it today and we are actively looking for a replacement.  We will definitely keep you posted.  So sorry about this.,"Hi (RP name) , good evening. We do apologize but we're unable to secure an aide to visit (Client) tonight. We have reached out to our caregivers however no one is available to pick up the shift. We're sorry for the inconvenience.Thank you for your understanding.","Client | HAROLD
+Shift 8A-8P
+CG Annabel will be late for 30 minutes due to traffic
+The client has been informed. They acknowledged.
+","Client | HAROLD
+Shift 8A-8P & 8P-8A
+Client’s son, Paul, called to inform us that he will be taking his father to a doctor’s appointment on Sunday, May 4th, so they will no longer need an aide for that date. Please update the schedule accordingly.","Client | HAROLD
+Shift 8P-8A
+CG Daniel called at 6:00 PM to inform that he will not be able to make it to his scheduled visit tonight with client Harold due to car trouble. No ETA available. Kindly assist in looking for a replacement.
+","CG Matthew
+Shift 05/01
+Called off because he has flu. Reaching out to CGs to secure replacement.","CG Matthew
+Shift 05/01
+Caregiver Matthew forgot to clock in and called to inform he arrived at 7:54 AM.  ","CG Matthew
+Shift 05/01
+CG Matthew extended his time until 8:58 PM as he provided additional assistance to the client, including helping with toileting and preparing/picking up dinner. ","Long-Term Care (LTC) insurance is a private policy the client must have purchased in advance. It helps pay for homecare once the client meets the policy requirements, usually needing assistance with daily activities, and coverage depends on the plan limits.
+Veterans Affairs (VA) benefits are government-based and only for eligible veterans or spouses. Coverage depends on military service and eligibility rules, and may provide homecare services or financial assistance like Aid and Attendance.
+In short, LTC insurance is a private, policy-based coverage, while VA benefits are government assistance tied to military service and eligibility.",0,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+7,"SINGSON, ANNA KATRINA",2026/04/18,20,PASS,va.katsings@gmail.com,A. Scheduling Dashboard,D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button,C. Alerts Sub-tab,D. CareFinder,A. Activities of Daily Living,B. Instrumental Activities of Daily Living,"A. Client, Caregiver, User, Category",Yes,No,Yes,Yes,"Thanks again for giving us a heads-up. I’ve marked you as unavailable for today, May 2nd, and we’ll work on coverage. Please keep us updated on when your car is fixed or if we need to hold off other upcoming shifts.
+","Hi Annabel Joyce, are you available to extend your shift with Harold to cover the next one (8PM-8AM)? Please let us know either way. Thank you!","Hi [name], good evening. We’d like to confirm if you’re available to cover an 8PM-8AM with Mr Harold tonight, May 2nd. Please send us a message or call us back. Thank you!","
+Hi Paul, good evening. I’m afraid Daniel will not make it tonight and we are actively looking for a replacement.  We’d like to confirm if you’d be okay having a new aide to cover the shift? We will definitely keep you posted.  So sorry about this.","Hi Paul, good evening. We do apologize but we're unable to secure an aide to visit Harold tonight. We have reached out to our caregivers however no one is available to pick up the shift. We're sorry for the inconvenience.Thank you for your understanding.
+","Client | Harold
+Shift 8A-8P
+05/02 CG Annabel will be late for 30 minutes due to traffic.
+The client has been informed. 
+","Harold | RP Paul sent in an updated schedule for 05/04- cancelation due to a doctor's appt. Daniel and Kiaras has been informed.
+",Daniel LMCO 05/02 8P-8A.  CG had car issues. Paul (RP) has been informed.,05/01 Matthew LMCO- sick with flu (AKS),05/01 Matthew manual clock in 7:54A (AKS),05/01 Matthew manual clock out 8:58P- CG needed to assist client to the toilet and picked up dinner (AKS),"LTC insurance are for anyone needing long-term care, and can be private, insurance or government. VA benefits are for military veterans only, paid for by the government.",0,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
+8,"Ladia, Krylene Marie Claire ",2026/04/18,19,PASS,kcladia11@gmail.com,D. Unassigned Visits,D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button,B. Alerts,D. CareFinder,A. Activities of Daily Living,B. Instrumental Activities of Daily Living,"A. Client, Caregiver, User, Category",Yes,No,No,No,"Hi Daniel, thanks for informing us. We understand that emergencies happen. Please take care and keep us updated on your status. Kindly confirm this call-off via chat as well. Thank you.","Hi Anabelle, I hope you're doing well. By any chance, would you be able to extend your shift tonight? We had a last-minute call-off and need coverage. Please let us know. Thank you!","Hi Anabelle, we have an open shift available tonight (May 2) from 8:00 PM to 8:00 AM for a client's Location. Please reply YES if you're available or NO if not. Thank you!","Hi Paul, this is Claire from Amada. I wanted to inform you that Daniel won’t be able to make it to his shift tonight due to car trouble. We are currently working on finding a replacement and will keep you updated. Thank you for your understanding.","Hi Paul, this is Claire from Amada. I wanted to update you that unfortunately we were unable to secure a caregiver for tonight’s shift. We sincerely apologize and appreciate your understanding. Please let us know if you need any assistance.",UPDATE: CG Annabel will be 30 minutes late due to highway traffic. Client has been informed.,UPDATE: Client Harold – Son Paul advised no caregiver needed on Sunday (May 4) due to doctor’s appointment.,URGENT: CG Daniel called off for tonight’s shift (8PM–8AM) with client Harold due to car trouble. Currently sourcing replacement.,CG Matthew called off for May 1 shift due to flu.," CG Matthew forgot to clock in; confirmed arrival at 7:54 AM for May 1 shift. ",CG Matthew extended shift until 8:58 PM to assist client with toileting and picking up dinner.,"Long-Term Care (LTC) Insurance 
+-is a private insurance policy that helps cover the cost of non-medical home care services when a client cannot perform at least 2 Activities of Daily Living (ADLs). It typically reimburses services based on policy coverage and may include an elimination period.
+
+Veterans Affairs (VA) Benefits, specifically Aid & Attendance, are government-funded benefits available to eligible veterans or their spouses. These benefits help pay for home care services, including assistance with daily living, but eligibility depends on military service, financial need, and medical condition.
+
+Key Difference:
+ LTC is privately purchased insurance with policy-based coverage, while VA benefits are government-funded and eligibility-based.",0,1,0,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1
+9,"Prado, Ann Joy ",2026/04/18,20,PASS,annjoyprado@gmail.com,C. Caregiver Pivot,B. Click open visit bar > Click Recommend > Sort Caregiver Distance > Hit Send Button,B. Alerts,D. CareFinder,A. Activities of Daily Living,B. Instrumental Activities of Daily Living,"A. Client, Caregiver, User, Category",No,No,Yes,Yes,"Hi, Daniel 
+Im sorry to hear about what happen, I hope all is well and thank you for 
+letting us know. I will try my best to find the an available one to cover your shift.
+Kindly let us now if there will be any changes in your situation.
+Stay safe.
+
+
+
+","Hi Annabel, 
+Hope everythings good. 
+Would you be interested to extend and cover your shift tonight for Mr Harold?
+The next caregiver wont make it due to a car problem.
+KIndly send us a message or call us back. We appreciate it.
+Thank you and stay safe
+
+
+
+
+","Hi Everyone,
+The 8:00pm to 8:00 am shift tonight with Mr. Harold is available.
+If interested please contact the scheduling department for covering shift for 
+Daniel since wont make it due to car problem.
+Thank you 
+
+
+
+
+","
+Hi Mr Harold. 
+
+Daniel wont make it tonight due to a car problem. We have are still looking 
+for a replacement. Sorry to hear about this as well. We also updated Paul about the situation and if there will be an available caregiver to cover tonight shift We will let you know.
+Thank you
+
+
+
+
+
+
+","Hi  Paul, 
+Good evening. We do apologize for any inconvenience,
+but we are unable to secure an caregiver to visit Harold tonight.
+We have reach out to caregivers about the said concern but no one 
+is available to pick up the shift.
+Again were sorry for the inconveience and Thank you for your understanding.
+
+
+","Hi, 
+Client Harold
+Shift 8:00 AM to 8:00 Pm 
+Aide Annabel reach out stated will be late for 30 Minutes due to a heavy traffic.
+Reach out to client already informed and acknowledge.
+
+
+
+
+","Client Harold
+RP Paul called to advised that He will Take Mr. Harold to a doctors appointment.
+No CG needed on May 4th Sunday. 
+
+
+
+","Client Harold.
+Shift 05/02 Friday 8:00pm to 8:00 am 
+CG Daniel LMCO due to car problem.
+Shift sent out via Axis.
+Reaching out to CG to look for a replacement.
+
+
+
+","05/01
+CG Matthew called off because he has a flu.
+Ann ","05/01
+CG Matthew for got to clock in and called to inform he arrived at 7:45 am.
+Ann","05/01
+CG Matthew called stated shift has been extended until 8:58 PM, needed 
+by the client going to the toilet and pick up dinner.
+Ann",The  Long-Term Care (LTC) is a private insurance available to anyone who can afford it While the Veterans affairs it is offers life long care for retired veterans and subsidized by the government.,1,0,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1
+10,"Lagnason, Amilyn",2026/04/18,18,PASS,amilynalagnason10@gmail.com,B. Client Pivot,D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button,B. Alerts,D. CareFinder,A. Activities of Daily Living,B. Instrumental Activities of Daily Living,"A. Client, Caregiver, User, Category",Yes,Yes,Yes,Yes,"Hi Harold, We would like to inform you that Daniel, your caregiver tonight will not be around tonight due to car problem. However, we are already looking for a caregiver replacement. We will update you in a while about this. Thank you. ","HI Annabel, We are just wondering if you can extend your shift from 8pm to 8am? CG Daniel who is originally in that schedule will not be available tonight due to car problem. ","Hi, Hope this message finds you well. Are you open for an overnight shift tonight, May 2, 8pm- 8am? Please message or call me, if you are available. Thank you. ","Hi Paul, Daniel, the caregiver for tonight May 2, 8pm-8am will not be available due to car problem. We are already looking for caregiver replacement. We will update you ahead if we already found one. Thank you. ","Hi Paul, We are so sorry to inform you that the caregiver for tonight, May 2nd, from 8pm-8am will not be available due to car problem. We also tried our best to find a caregiver that would pick up the shift. However there is none available at this moment. We have already escalated this to the Admin and we will notify you once we can find one. ","Hi Team, Anabel will be late for 30mins due to traffic. Already adjusted her time in shift and made notes in the visit. Thank you, ","HI Team, Paul called (Son of Client Daniel) will not be needing the aide on May 4th, Sunday, all day, because the client will be having a doctors appointment. Already made changes on the visit and made necessary notes. Thank you.","Hi Team, CG Daniel will not be available tonight, May 2nd 8pm-8am shift due to car problem Already looking for a CG replacement. Made necessary notes in the visit. Thank you.",5/1 CG Matthew called off due to flu. (Ami),"5/1 CG Matthew called for manual clock in, arrived at clients house 7:54am, called the client and verified. (Ami)",5/1 CG Matthew called to extend until 8:58pm because client still needs assistance. Called the client and verified. (Ami),"The LTCI is a private insurance that the client pays for a premium pay, services include ADLs. While Veterans Affairs is  government benefit for eligible veterans and services include mostly for medical necessary. ",0,1,0,1,1,1,1,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1
