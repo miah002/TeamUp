@@ -262,7 +262,7 @@
     },
     {
       "parameters": {
-        "fromEmail": "trainees@teamup.example",
+        "fromEmail": "ulanjeremiah@gmail.com",
         "toEmail": "={{$('Aggregate + build Lark patch').first().json.email}}",
         "subject": "TeamUp SA Assessment result",
         "options": {}
