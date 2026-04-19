@@ -19,52 +19,52 @@
         "jsonBody": "={\n  \"app_id\": \"{{$vars.LARK_APP_ID}}\",\n  \"app_secret\": \"{{$vars.LARK_APP_SECRET}}\"\n}",
         "options": {}
       },
-      "id": "67344670-4e8f-43b5-9f9c-d7310557acd2",
+      "id": "c399c44c-aefe-4267-92f9-1dc77180c215",
       "name": "Lark: tenant_access_token",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -512,
-        -48
+        -912,
+        -176
       ]
     },
     {
       "parameters": {
         "jsCode": "// Pull webhook body + token from their respective nodes.\nconst webhookBody = $('Webhook: Lark Base record created').first().json.body ?? $('Webhook: Lark Base record created').first().json;\nconst token = $json.tenant_access_token;\n\n// Lark Base automation sends {record: {...}} or event subscription sends {event: {record: {...}}}.\nconst rec = webhookBody.record ?? webhookBody.event?.record ?? webhookBody;\nconst fields = rec.fields ?? webhookBody.fields ?? {};\n\nreturn [{\n  json: {\n    tenant_access_token: token,\n    record_id: rec.record_id ?? rec.id ?? webhookBody.record_id,\n    fields\n  }\n}];"
       },
-      "id": "3ab46ffc-ee2c-4741-bae6-9a12f99d47b6",
+      "id": "d27b53f0-2ad8-4ce1-ba16-3ef83d3120c4",
       "name": "Normalize webhook + carry token",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -288,
-        -48
+        -688,
+        -176
       ]
     },
     {
       "parameters": {
         "jsCode": "// Inline answer key. To refresh: edit docs/trainee-evaluation/answer-key.json\n// in the repo and re-import this workflow, or replace this node with an HTTP GET\n// to the committed raw URL when trainers need to edit without redeploys.\nconst ANSWER_KEY = {\n  \"version\": 1,\n  \"passing_percent\": 75,\n  \"source_table_id\": \"tblnGRAlrjXQhfRO\",\n  \"source_app_token\": \"R0XnbNkwdaY4A1sNPcklT2MTgqe\",\n  \"fields\": {\n    \"name\": \"COMPLETE NAME\",\n    \"email\": \"ACTIVE EMAIL ADDRESS\",\n    \"total\": \"TOTAL\",\n    \"result\": \"RESULTS\"\n  },\n  \"questions\": [\n    {\n      \"id\": \"q1\",\n      \"type\": \"exact\",\n      \"field_name\": \"This is where you can easily view open visits on a specific day or date range that you can offer to a caregiver asking for available shifts.\",\n      \"score_field\": \"1 (Caregiver Pivot)\",\n      \"expected\": \"C. Caregiver Pivot\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q2\",\n      \"type\": \"exact\",\n      \"field_name\": \"This is how you send out a shift to recommended caregivers.\",\n      \"score_field\": \"2 Sent Out\",\n      \"expected\": \"D. Click open visit bar > Send to Caregivers > Add Comment (as needed) > Click Recommend > Tick checkboxes of aides highlighted in green > Click Okay > Hit Send Button\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q3\",\n      \"type\": \"exact\",\n      \"field_name\": \"This is where you can view the visits requested or picked up by the caregivers from the shifts we sent out via the AxisCare app.\",\n      \"score_field\": \"3 (Alerts ST)\",\n      \"expected\": \"C. Alerts Sub-tab\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q4\",\n      \"type\": \"exact\",\n      \"field_name\": \"This feature in WellSky is useful when searching for caregivers to fill shifts for clients. It allows you to filter for caregivers who fulfill specific criteria needed by clients for a particular shift. You can also mass message caregivers and fill shifts in real time.\",\n      \"score_field\": \"4 (CareFinder)\",\n      \"expected\": \"D. CareFinder\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q5\",\n      \"type\": \"exact\",\n      \"field_name\": \"These are basic activities required for taking care of oneself. These include things such as bathing, toileting, continence, dressing, feeding and mobility.\",\n      \"score_field\": \"5 (ADLs)\",\n      \"expected\": \"A. Activities of Daily Living\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q6\",\n      \"type\": \"exact\",\n      \"field_name\": \"These are activities that enable an individual to live independently within the community. These Include such things as housekeeping/cleaning, laundry, money management, meal preparation, medication management and shopping/transportation.\",\n      \"score_field\": \"6 (IADLs)\",\n      \"expected\": \"B. Instrumental Activities of Daily Living\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q7\",\n      \"type\": \"exact\",\n      \"field_name\": \"What are the usual tags to include for a call log?\",\n      \"score_field\": \"7 (A)\",\n      \"expected\": \"A. Client, Caregiver, User, Category\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q8\",\n      \"type\": \"exact\",\n      \"field_name\": \"The scheduler called the client to inform that the aide will not be able to attend to her shift that night due to a fire incident in their apartment complex and she is still cleaning up their unit, as advised by the caregiver. The client acknowledged and stated that they do not need any aide replacement since their daughter is at home.\",\n      \"score_field\": \"8 (No)\",\n      \"expected\": \"No\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q9\",\n      \"type\": \"exact\",\n      \"field_name\": \"Mr. Parker called to ask the mobile number of his caregiver yesterday since he needs to discuss some errands for tomorrow. The scheduler acknowledged and ended the call by providing the caregiver's number to the client. This is to ensure that all information needed will be explained well to the caregiver\",\n      \"score_field\": \"9 (No)\",\n      \"expected\": \"No\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q10\",\n      \"type\": \"exact\",\n      \"field_name\": \"Your office/admin partners advised the team to remove a certain caregiver from a case due to being unreliable and deemed not fit for the case. The scheduler updated the calendar of the aide and informed her that there have been schedule changes and we'll keep her posted for updates.\",\n      \"score_field\": \"10 (Yes)\",\n      \"expected\": \"Yes\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q11\",\n      \"type\": \"exact\",\n      \"field_name\": \"Client requested to not have the caregiver she had yesterday moving forward. Client stated that the aide keeps on using her phone during her shift. The scheduler put a client block on the aide's profile and did not inform the caregiver.\",\n      \"score_field\": \"11 (No)\",\n      \"expected\": \"No\",\n      \"weight\": 1,\n      \"normalize\": \"trim_lower\"\n    },\n    {\n      \"id\": \"q12\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, create an SMS response and acknowledge the caregiver who called off.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text\",\n      \"score_field\": \"12 (CG LMCO)\",\n      \"prompt\": \"Caregiver Daniel called at 6 PM on Fri May 2 to say he cannot make tonight's visit with client Harold due to a car problem. Write an SMS to Daniel acknowledging the call-off.\",\n      \"expected_points\": [\n        \"addresses the caregiver by name (Daniel)\",\n        \"acknowledges the reason (car problem)\",\n        \"confirms receipt of the call-off\",\n        \"professional and empathetic tone\",\n        \"mentions looking for a replacement or next steps\"\n      ],\n      \"required_keywords\": [\n        \"daniel\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q13\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, create an SMS spiel to ask outgoing caregiver if they can extend.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem.-Text\",\n      \"score_field\": \"13 (Extend)\",\n      \"prompt\": \"Daniel (scheduled for tonight) called off due to a car problem. Write an SMS to the OUTGOING caregiver asking if they can extend their shift to cover.\",\n      \"expected_points\": [\n        \"polite professional greeting to the outgoing caregiver\",\n        \"briefly explains the situation (incoming CG cannot make it)\",\n        \"asks whether they can extend\",\n        \"mentions the shift timeframe or end time\",\n        \"shows appreciation for considering\"\n      ],\n      \"required_keywords\": [\n        \"extend\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q14\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, create an SMS spiel to offer the open visit to our caregivers.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled 8PM - 8AM visit later tonight due car problem.-Text\",\n      \"score_field\": \"14 (Open Visit)\",\n      \"prompt\": \"Daniel called off his 8 PM - 8 AM visit tonight. Write an SMS broadcast offering this open visit to other caregivers.\",\n      \"expected_points\": [\n        \"clear statement that there is an open visit\",\n        \"includes the shift times (8 PM - 8 AM)\",\n        \"includes the date (May 2nd / tonight / Friday)\",\n        \"asks for confirmation / reply if interested\",\n        \"professional tone\"\n      ],\n      \"required_keywords\": [\n        \"8\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q15\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, create an SMS spiel to inform the client that caregiver called off and we're still looking for a replacement.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text\",\n      \"score_field\": \"15 (Search)\",\n      \"prompt\": \"Daniel called off tonight's visit with Harold. Write an SMS to client Harold or his son Paul informing them of the call-off and that a replacement is being searched for.\",\n      \"expected_points\": [\n        \"addresses client/family by name (Harold or Paul)\",\n        \"informs the caregiver cannot make it\",\n        \"states a replacement is being searched for\",\n        \"apologizes or expresses empathy for the inconvenience\",\n        \"commits to providing an update\"\n      ],\n      \"required_keywords\": [\n        \"replacement\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q16\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, create an SMS spiel to update the client NO caregiver is available to pick up the shift-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text\",\n      \"score_field\": \"16 (No CG)\",\n      \"prompt\": \"After searching, no caregiver is available to cover Harold's visit tonight. Write an SMS to the client (Harold) or his son (Paul) informing them no replacement was found.\",\n      \"expected_points\": [\n        \"addresses client/family by name (Harold or Paul)\",\n        \"clearly states no caregiver is available\",\n        \"apologizes sincerely\",\n        \"suggests a next step or contact number\",\n        \"professional, empathetic tone\"\n      ],\n      \"required_keywords\": [\n        \"no\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q17\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) caregiver Annabel informed that she will be late for 30 minutes to highway traffic.-Text\",\n      \"score_field\": \"17 (CG Late)\",\n      \"prompt\": \"Annabel called to say she will be 30 minutes late on Fri May 2 due to highway traffic. Compose a group-chat update to the office admin partners.\",\n      \"expected_points\": [\n        \"names the caregiver (Annabel)\",\n        \"states she will be 30 minutes late\",\n        \"states the reason (highway traffic)\",\n        \"includes the date (May 2nd / Friday)\",\n        \"concise, admin-partner tone\"\n      ],\n      \"required_keywords\": [\n        \"annabel\",\n        \"30\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q18\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: Client's son, Paul called to inform that he will take his father to a doctor's appointment and they don't need an aide on Sunday, May 4th.-Text\",\n      \"score_field\": \"18 (Visit Cancel)\",\n      \"prompt\": \"Paul (client's son) called to cancel the aide for Sun May 4 because he is taking his father to a doctor. Compose a group-chat update to the office admin partners.\",\n      \"expected_points\": [\n        \"names the responsible party (Paul) and relationship (son)\",\n        \"states visit cancellation for Sunday May 4\",\n        \"gives the reason (doctor's appointment)\",\n        \"notes no aide is needed that day\",\n        \"concise, admin-partner tone\"\n      ],\n      \"required_keywords\": [\n        \"paul\",\n        \"may 4\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q19\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text\",\n      \"score_field\": \"19 (CG absent)\",\n      \"prompt\": \"Daniel called off tonight's visit with Harold due to a car problem. Compose a group-chat update to the office admin partners.\",\n      \"expected_points\": [\n        \"names the caregiver (Daniel) and client (Harold)\",\n        \"states call-off for tonight's visit\",\n        \"gives the reason (car problem)\",\n        \"notes a replacement is being sought\",\n        \"concise, admin-partner tone\"\n      ],\n      \"required_keywords\": [\n        \"daniel\",\n        \"harold\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q20\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Update the shift memo/note based on the scenario.\",\n      \"score_field\": \"20 (Memo flu)\",\n      \"prompt\": \"Update the shift memo/note for a scenario involving a caregiver out with flu (see original scenario image/reference).\",\n      \"expected_points\": [\n        \"records the reason (flu / illness)\",\n        \"notes the date\",\n        \"identifies caregiver or client affected\",\n        \"states action taken (replacement or cancellation)\",\n        \"clear, factual, memo-style wording\"\n      ],\n      \"required_keywords\": [\n        \"flu\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q21\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Update the shift memo/note based on the scenario. 2\",\n      \"score_field\": \"21 (Memo Clock)\",\n      \"prompt\": \"Update the shift memo/note for a scenario involving a clock-in / clock-out issue (see original scenario image/reference).\",\n      \"expected_points\": [\n        \"records the clock-in or clock-out discrepancy\",\n        \"notes the date and time\",\n        \"identifies caregiver\",\n        \"states action taken or correction made\",\n        \"clear, factual, memo-style wording\"\n      ],\n      \"required_keywords\": [\n        \"clock\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q22\",\n      \"type\": \"scenario\",\n      \"field_name\": \"Update the shift memo/note based on the scenario. 3\",\n      \"score_field\": \"22 (Extended)\",\n      \"prompt\": \"Update the shift memo/note for a scenario where a shift was extended (see original scenario image/reference).\",\n      \"expected_points\": [\n        \"records the extension\",\n        \"notes new end time or extra hours\",\n        \"identifies caregiver and client\",\n        \"notes reason for extension\",\n        \"clear, factual, memo-style wording\"\n      ],\n      \"required_keywords\": [\n        \"extend\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    },\n    {\n      \"id\": \"q23\",\n      \"type\": \"scenario\",\n      \"field_name\": \"OWN UNDERSTANDING | A client is exploring options to help cover the cost of ongoing homecare services. They mention having a Long-Term Care (LTC) insurance policy, while another client asks if they can use their Veterans Affairs (VA) benefits for similar services. What are the key differences between Long-Term Care insurance and Veterans Affairs (VA) benefits in terms usage for homecare services?\",\n      \"score_field\": \"23 (LTCI VA)\",\n      \"prompt\": \"Explain the key differences between Long-Term Care (LTC) insurance and Veterans Affairs (VA) benefits as they apply to paying for homecare services.\",\n      \"expected_points\": [\n        \"notes LTC insurance is a private policy purchased by the individual\",\n        \"notes VA benefits are government benefits for eligible veterans\",\n        \"mentions eligibility differences (anyone who qualifies vs veterans/spouses)\",\n        \"mentions coverage/usage differences (e.g., LTC often reimburses; VA may provide direct services or aid & attendance)\",\n        \"explanation is coherent and demonstrates understanding, not just keyword dropping\"\n      ],\n      \"required_keywords\": [\n        \"ltc\",\n        \"va\"\n      ],\n      \"weight\": 1,\n      \"max_score\": 5,\n      \"needs_trainer_review\": true\n    }\n  ]\n};\nreturn [{ json: ANSWER_KEY }];"
       },
-      "id": "ea26a018-3a88-412f-8711-e05bc2e23dc8",
+      "id": "425061c8-f213-4db4-8d88-d694ef5171dd",
       "name": "Load answer key",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -288,
-        160
+        -688,
+        32
       ]
     },
     {
       "parameters": {
         "jsCode": "const key = $('Load answer key').first().json;\nconst n   = $('Normalize webhook + carry token').first().json;\nconst fields = $('Lark: fetch full record').first().json.data?.record?.fields || {};\n\nreturn key.questions.map(q => ({\n  json: {\n    record_id: n.record_id,\n    tenant_access_token: n.tenant_access_token,\n    name:  fields[key.fields.name]  ?? '',\n    email: fields[key.fields.email] ?? '',\n    passing_percent: key.passing_percent,\n    rubric_version:  key.version,\n    question: q,\n    answer:  (fields[q.field_name] ?? '').toString(),\n  }\n}));"
       },
-      "id": "eec1cdb0-1e6e-43d3-9445-468ed7f74608",
+      "id": "8236cd43-7c79-4f19-887c-aefac015fb7e",
       "name": "Build per-question items",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        176,
-        -48
+        -224,
+        -176
       ]
     },
     {
@@ -113,39 +113,39 @@
         },
         "options": {}
       },
-      "id": "14105094-a271-4833-bc0f-d7635b32f5f7",
+      "id": "e7c6b7c7-9eeb-4eb8-835c-9d004ed38f27",
       "name": "Switch: exact vs scenario",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
       "position": [
-        400,
-        -48
+        0,
+        -176
       ]
     },
     {
       "parameters": {
         "jsCode": "const { question, answer } = $json;\nconst norm = s => question.normalize === 'trim_lower'\n  ? String(s ?? '').trim().toLowerCase()\n  : String(s ?? '').trim();\n\nconst match = norm(answer) === norm(question.expected ?? '');\nreturn [{\n  json: {\n    ...$json,\n    per_question: {\n      id: question.id,\n      type: 'exact',\n      score_field: question.score_field,\n      score: match ? question.weight : 0,\n      max:   question.weight,\n      feedback: match ? 'Correct.' : 'Incorrect.'\n    }\n  }\n}];"
       },
-      "id": "e6abfaf8-9be9-4e03-873f-cc31ce4e46f6",
+      "id": "af1a45ce-1f6c-4f5a-9b55-e6b427797253",
       "name": "Exact match score",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        640,
-        -160
+        240,
+        -288
       ]
     },
     {
       "parameters": {
-        "jsCode": "const item = $input.first().json;\nconst question = item.question;\nconst answer   = item.answer;\n\nlet raw = item.message?.content ?? item.choices?.[0]?.message?.content ?? item.text ?? '';\nlet out;\ntry { out = typeof raw === 'string' ? JSON.parse(raw) : raw; }\ncatch { out = { score: 0, reasoning: 'Malformed LLM output, defaulted to 0.', missing_points: [], keywords_found: [] }; }\n\nconst maxQ = question.max_score ?? 5;\nlet score = Math.max(0, Math.min(maxQ, Number(out.score) || 0));\n\nif (question.required_keywords?.length) {\n  const lower = (answer || '').toLowerCase();\n  const missing = question.required_keywords.filter(k => !lower.includes(k.toLowerCase()));\n  if (missing.length) score = Math.min(score, Math.floor(maxQ / 2));\n}\n\nconst weighted = (score * question.weight) / maxQ;\nreturn [{\n  json: {\n    ...item,\n    per_question: {\n      id: question.id,\n      type: 'scenario',\n      score_field: question.score_field,\n      score: weighted,\n      max:   question.weight,\n      raw_score: score,\n      max_raw:   maxQ,\n      feedback:  out.reasoning ?? '',\n      missing:   out.missing_points ?? []\n    }\n  }\n}];"
+        "jsCode": "const item = $input.first().json;\nconst question = item.question ?? {};\nconst answer   = item.answer;\n\nlet raw = item.message?.content ?? item.choices?.[0]?.message?.content ?? item.text ?? '';\nlet out;\ntry { out = typeof raw === 'string' ? JSON.parse(raw) : raw; }\ncatch { out = { score: 0, reasoning: 'Malformed LLM output, defaulted to 0.', missing_points: [], keywords_found: [] }; }\n\nconst maxQ = question.max_score ?? 5;\nlet score = Math.max(0, Math.min(maxQ, Number(out.score) || 0));\n\nif (question.required_keywords?.length) {\n  const lower = (answer || '').toLowerCase();\n  const missing = question.required_keywords.filter(k => !lower.includes(k.toLowerCase()));\n  if (missing.length) score = Math.min(score, Math.floor(maxQ / 2));\n}\n\nconst weighted = (score * question.weight) / maxQ;\nreturn [{\n  json: {\n    ...item,\n    per_question: {\n      id: question.id,\n      type: 'scenario',\n      score_field: question.score_field,\n      score: weighted,\n      max:   question.weight,\n      raw_score: score,\n      max_raw:   maxQ,\n      feedback:  out.reasoning ?? '',\n      missing:   out.missing_points ?? []\n    }\n  }\n}];"
       },
-      "id": "b7d46c3b-c41f-49a0-9f34-681cef75ce93",
+      "id": "b7bd521f-5dcd-495a-a5be-3087470defe8",
       "name": "Apply keyword floor",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        864,
-        80
+        464,
+        -48
       ]
     },
     {
@@ -154,26 +154,26 @@
         "combineBy": "combineAll",
         "options": {}
       },
-      "id": "71d5c9fc-ad29-4dec-950c-f1644db83759",
+      "id": "2c23b9de-c1b4-41e8-bd40-afe5ad660284",
       "name": "Merge branches",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        1104,
-        -48
+        704,
+        -176
       ]
     },
     {
       "parameters": {
         "jsCode": "const items = $input.all().map(i => i.json.per_question);\nconst n     = $('Normalize webhook + carry token').first().json;\nconst key   = $('Load answer key').first().json;\nconst fields = $('Lark: fetch full record').first().json.data?.record?.fields || {};\n\nconst score = items.reduce((s, q) => s + q.score, 0);\nconst max   = items.reduce((s, q) => s + q.max,   0);\nconst percent = max > 0 ? Math.round((score / max) * 1000) / 10 : 0;\nconst pass = percent >= key.passing_percent;\n\n// Build the Lark Base fields PATCH body: per-question score fields + TOTAL + RESULTS.\nconst patchFields = {};\nfor (const q of items) {\n  if (q.score_field) patchFields[q.score_field] = q.score;\n}\npatchFields[key.fields.total]  = score;\npatchFields[key.fields.result] = pass ? 'PASS' : 'FAIL';\n\nreturn [{\n  json: {\n    record_id: n.record_id,\n    tenant_access_token: n.tenant_access_token,\n    name:  fields[key.fields.name]  ?? '',\n    email: fields[key.fields.email] ?? '',\n    per_question: items,\n    score, max, percent,\n    result: pass ? 'PASS' : 'FAIL',\n    passing_percent: key.passing_percent,\n    rubric_version: key.version,\n    patch_fields: patchFields,\n    graded_at: new Date().toISOString()\n  }\n}];"
       },
-      "id": "712a8e1c-845c-4b00-85a9-e7ec939636eb",
+      "id": "5b684cf3-56bb-40a8-9c7a-57c4a06db8aa",
       "name": "Aggregate + build Lark patch",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1328,
-        -48
+        928,
+        -176
       ]
     },
     {
@@ -198,13 +198,13 @@
         "jsonBody": "={\n  \"fields\": {{ JSON.stringify($json.patch_fields) }}\n}",
         "options": {}
       },
-      "id": "0e0972ec-85a5-4ed3-ae35-35207cc97391",
+      "id": "ff570699-bb0e-45a7-b778-44857d7d7a97",
       "name": "Lark Base: PATCH scores to record",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1568,
-        -48
+        1168,
+        -176
       ]
     },
     {
@@ -228,13 +228,13 @@
         },
         "options": {}
       },
-      "id": "4021a3f3-c2fd-44b5-9f5a-71a40622ca42",
+      "id": "6a2fc8ff-16ce-4263-a454-73dfba2c7de1",
       "name": "IF: passed?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        1808,
-        -48
+        1408,
+        -176
       ]
     },
     {
@@ -244,13 +244,13 @@
         "subject": "You passed the TeamUp SA Assessment",
         "options": {}
       },
-      "id": "93559ef2-4c92-41fe-bf6c-6fa7c8a3afbb",
+      "id": "b957761f-99b0-43d2-8277-5d9ad75e0c90",
       "name": "Email: pass",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        2048,
-        -160
+        1648,
+        -288
       ],
       "webhookId": "2e3191ec-2fe0-43e5-b776-6abfa29d1c40",
       "credentials": {
@@ -267,13 +267,13 @@
         "subject": "TeamUp SA Assessment result",
         "options": {}
       },
-      "id": "3bc3613e-1fe7-449b-b709-e4f22deb886b",
+      "id": "205ec7a5-7965-4f44-af2a-b223fbd5120e",
       "name": "Email: fail + retake",
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        2048,
-        80
+        1648,
+        -48
       ],
       "webhookId": "2130abb7-94a1-4111-855f-9bf5f7fe6e59",
       "credentials": {
@@ -286,7 +286,9 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://api.openai.com/v1/chat/completions",
+        "url": "=https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -302,17 +304,23 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0,\n  \"response_format\": { \"type\": \"json_object\" },\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a strict but fair grader for a homecare scheduling trainee evaluation. You score one free-response answer at a time against a rubric. You do not reveal the rubric to the candidate. You respond with a single JSON object, no prose, no markdown fences. If the candidate's answer is empty or off-topic, score 0.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"TASK:\\n{{$json.question.prompt}}\\n\\nRUBRIC \u2014 expected points:\\n{{ $json.question.expected_points.map(p => '- ' + p).join('\\\\n') }}\\n\\nREQUIRED KEYWORDS:\\n{{ ($json.question.required_keywords || []).join(', ') }}\\n\\nCANDIDATE ANSWER:\\n\\\"\\\"\\\"\\n{{$json.answer}}\\n\\\"\\\"\\\"\\n\\nScore 0 to {{$json.question.max_score}} on Relevance, Completeness, Reasoning (equal weight).\\n\\nReturn JSON:\\n{\\n  \\\"score\\\": <integer>,\\n  \\\"keywords_found\\\": [],\\n  \\\"missing_points\\\": [],\\n  \\\"reasoning\\\": \\\"<1-2 sentences>\\\"\\n}\"\n    }\n  ]\n}",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"temperature\": 0,\n  \"response_format\": { \"type\": \"json_object\" },\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a strict but fair grader for a homecare scheduling trainee evaluation. You score one free-response answer at a time against a rubric. You do not reveal the rubric to the candidate. You respond with a single JSON object, no prose, no markdown fences. If the candidate's answer is empty or off-topic, score 0.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"TASK:\\n{{$json.question.prompt}}\\n\\nRUBRIC — expected points:\\n{{ $json.question.expected_points.map(p => '- ' + p).join('\\\\n') }}\\n\\nREQUIRED KEYWORDS:\\n{{ ($json.question.required_keywords || []).join(', ') }}\\n\\nCANDIDATE ANSWER:\\n\\\"\\\"\\\"\\n{{$json.answer}}\\n\\\"\\\"\\\"\\n\\nScore 0 to {{$json.question.max_score}} on Relevance, Completeness, Reasoning (equal weight).\\n\\nReturn JSON:\\n{\\n  \\\"score\\\": <integer>,\\n  \\\"keywords_found\\\": [],\\n  \\\"missing_points\\\": [],\\n  \\\"reasoning\\\": \\\"<1-2 sentences>\\\"\\n}\"\n    }\n  ]\n}",
         "options": {}
       },
-      "id": "lark-llm-node",
+      "id": "bd592e52-ab98-4418-a9b4-84f6552bdf14",
       "name": "LLM: grade scenario (HTTP)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        560,
-        160
-      ]
+        160,
+        32
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "TaRO7BXf50ceMvPt",
+          "name": "Groq account"
+        }
+      }
     },
     {
       "parameters": {
@@ -335,26 +343,25 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -80,
-        -48
+        -480,
+        -176
       ],
-      "id": "eefcbe29-f1e6-4d96-a5c8-d1ae28044f9e",
+      "id": "70de612d-3c45-4f5a-87a4-1adf51d222a1",
       "name": "Lark: fetch full record"
     },
     {
       "parameters": {
         "httpMethod": "POST",
         "path": "lark/trainee-form",
-        "responseMode": "onReceived",
         "options": {}
       },
-      "id": "86df39db-74a0-42db-b2c9-a4bcccf3b2a5",
+      "id": "ac98c36f-fa7a-42fa-b303-3a3353cc992b",
       "name": "Webhook: Lark Base record created",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1.1,
       "position": [
-        -736,
-        -48
+        -1136,
+        -176
       ],
       "webhookId": "lark-trainee-form"
     }
@@ -530,16 +537,16 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "75e805e9-7d55-4961-b6f8-4d6f6458e00b",
+  "versionId": "d2e3673b-ad34-445d-9803-b06cfc317502",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "dcf94dd9d6ee657bcc45ad80ae4f58bff28b2a6db74b07c1fb4a28185609a4d7"
   },
-  "id": "391ROr1WsYSJkVcq",
+  "id": "buq2FLBNsCHEoi9w",
   "tags": []
 }
