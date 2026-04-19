@@ -30,7 +30,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Pull webhook body + token from their respective nodes.\nconst webhookBody = $('Webhook: Lark Base record created').first().json.body ?? $('Webhook: Lark Base record created').first().json;\nconst token = $json.tenant_access_token;\n\n// Lark Base automation sends {record: {...}} or event subscription sends {event: {record: {...}}}.\nconst rec = webhookBody.record ?? webhookBody.event?.record ?? webhookBody;\nconst fields = rec.fields ?? webhookBody.fields ?? {};\n\nreturn [{\n  json: {\n    tenant_access_token: token,\n    record_id: rec.record_id ?? rec.id ?? webhookBody.record_id,\n    fields\n  }\n}];"
+        "jsCode": "const webhookData = $('Webhook: Lark Base record created').first().json;\nconst webhookBody = webhookData.body ?? webhookData;\nconst token = $json.tenant_access_token;\n\nconst rec = webhookBody.record ?? webhookBody.event?.record ?? webhookBody;\nconst fields = rec.fields ?? webhookBody.fields ?? {};\n\nconst record_id = webhookData.query?.record_id\n  ?? rec.record_id\n  ?? rec.id\n  ?? webhookBody.record_id;\n\nreturn [{ json: { tenant_access_token: token, record_id, fields } }];"
       },
       "id": "d27b53f0-2ad8-4ce1-ba16-3ef83d3120c4",
       "name": "Normalize webhook + carry token",
@@ -293,10 +293,6 @@
         "headerParameters": {
           "parameters": [
             {
-              "name": "Authorization",
-              "value": "=Bearer {{$secret.OPENAI_API_KEY}}"
-            },
-            {
               "name": "Content-Type",
               "value": "application/json"
             }
@@ -353,17 +349,21 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "lark/trainee-form",
-        "options": {}
+        "options": {
+          "responseCode": {
+            "values": {}
+          }
+        }
       },
-      "id": "ac98c36f-fa7a-42fa-b303-3a3353cc992b",
-      "name": "Webhook: Lark Base record created",
       "type": "n8n-nodes-base.webhook",
-      "typeVersion": 1.1,
+      "typeVersion": 2.1,
       "position": [
         -1136,
         -176
       ],
-      "webhookId": "lark-trainee-form"
+      "id": "b2e9579d-88b7-4d93-885f-d4f1b2d20fd0",
+      "name": "Webhook: Lark Base record created",
+      "webhookId": "95209270-37d5-4525-9d32-eb62001a5281"
     }
   ],
   "pinData": {},
@@ -542,7 +542,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "d2e3673b-ad34-445d-9803-b06cfc317502",
+  "versionId": "c8dd8207-be04-4619-9492-4bdc10f61a35",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "dcf94dd9d6ee657bcc45ad80ae4f58bff28b2a6db74b07c1fb4a28185609a4d7"
