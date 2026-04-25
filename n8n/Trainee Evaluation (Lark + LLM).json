@@ -4,7 +4,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://open.sg.larksuite.com/open-apis/auth/v3/tenant_access_token/internal",
+        "url": "https://open.larksuite.com/open-apis/auth/v3/tenant_access_token/internal",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -178,7 +178,7 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "=https://open.sg.larksuite.com/open-apis/bitable/v1/apps/{{$vars.LARK_BASE_APP}}/tables/{{$vars.LARK_SUBMISSIONS_TABLE}}/records/{{$json.record_id}}",
+        "url": "=https://open.larksuite.com/open-apis/bitable/v1/apps/{{$vars.LARK_BASE_APP}}/tables/{{$vars.LARK_SUBMISSIONS_TABLE}}/records/{{$json.record_id}}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -319,7 +319,7 @@
     },
     {
       "parameters": {
-        "url": "=https://open.sg.larksuite.com/open-apis/bitable/v1/apps/{{$vars.LARK_BASE_APP}}/tables/{{$vars.LARK_SUBMISSIONS_TABLE}}/records/{{$('Normalize webhook + carry token').first().json.record_id}}",
+        "url": "=https://open.larksuite.com/open-apis/bitable/v1/apps/{{$vars.LARK_BASE_APP}}/tables/{{$vars.LARK_SUBMISSIONS_TABLE}}/records/{{$('Normalize webhook + carry token').first().json.record_id}}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
