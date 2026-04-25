@@ -178,13 +178,15 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "=https://open.larksuite.com/open-apis/bitable/v1/apps/{{$vars.LARK_BASE_APP}}/tables/{{$vars.LARK_SUBMISSIONS_TABLE}}/records/{{$json.record_id}}",
+        "url": "={{ 'https://open.larksuite.com/open-apis/bitable/v1/apps/' + $vars.LARK_BASE_APP + '/tables/' + $vars.LARK_SUBMISSIONS_TABLE + '/records/' + $json.record_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Authorization",
-              "value": "=Bearer {{$json.tenant_access_token}}"
+              "value": "={{ 'Bearer ' + $json.tenant_access_token }}"
             },
             {
               "name": "Content-Type",
@@ -193,14 +195,14 @@
           ]
         },
         "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"fields\": {{ JSON.stringify($json.patch_fields) }}\n}",
+        "specifyBody": "string",
+        "body": "={{ JSON.stringify({ fields: $json.patch_fields }) }}",
         "options": {}
       },
       "id": "ff570699-bb0e-45a7-b778-44857d7d7a97",
       "name": "Lark Base: PATCH scores to record",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "typeVersion": 4.4,
       "position": [
         1168,
         -176
