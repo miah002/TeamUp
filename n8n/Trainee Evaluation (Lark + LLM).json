@@ -177,8 +177,8 @@
     },
     {
       "parameters": {
-        "method": "PATCH",
-        "url": "={{ 'https://open.larksuite.com/open-apis/bitable/v1/apps/' + $vars.LARK_BASE_APP + '/tables/' + $vars.LARK_SUBMISSIONS_TABLE + '/records/' + $json.record_id }}",
+        "method": "POST",
+        "url": "={{ 'https://open.larksuite.com/open-apis/bitable/v1/apps/' + $vars.LARK_BASE_APP + '/tables/' + $vars.LARK_SUBMISSIONS_TABLE + '/records/batch_update' }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -193,8 +193,8 @@
           ]
         },
         "sendBody": true,
-        "specifyBody": "string",
-        "body": "={{ JSON.stringify({ fields: $json.patch_fields }) }}",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ records: [{ record_id: $json.record_id, fields: $json.patch_fields }] }) }}",
         "options": {}
       },
       "id": "ff570699-bb0e-45a7-b778-44857d7d7a97",
