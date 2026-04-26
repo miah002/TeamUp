@@ -179,8 +179,6 @@
       "parameters": {
         "method": "PATCH",
         "url": "={{ 'https://open.larksuite.com/open-apis/bitable/v1/apps/' + $vars.LARK_BASE_APP + '/tables/' + $vars.LARK_SUBMISSIONS_TABLE + '/records/' + $json.record_id }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
