@@ -210,6 +210,36 @@
       "parameters": {
         "conditions": {
           "options": {
+            "caseSensitive": false,
+            "typeValidation": "loose"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{$('Aggregate + build Lark patch').first().json.email}}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f9e8d7c6-b5a4-3210-fedc-ba9876543210",
+      "name": "IF: valid email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
             "caseSensitive": true,
             "typeValidation": "strict"
           },
@@ -232,7 +262,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        1408,
+        1648,
         -176
       ]
     },
@@ -248,7 +278,7 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        1648,
+        1888,
         -288
       ],
       "webhookId": "2e3191ec-2fe0-43e5-b776-6abfa29d1c40",
@@ -271,7 +301,7 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        1648,
+        1888,
         -48
       ],
       "webhookId": "2130abb7-94a1-4111-855f-9bf5f7fe6e59",
@@ -474,6 +504,17 @@
       ]
     },
     "Lark Base: PATCH scores to record": {
+      "main": [
+        [
+          {
+            "node": "IF: valid email?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: valid email?": {
       "main": [
         [
           {
