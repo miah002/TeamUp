@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "passing_score": 17.5,
   "source_table_id": "tblnGRAlrjXQhfRO",
   "source_app_token": "R0XnbNkwdaY4A1sNPcklT2MTgqe",
@@ -114,15 +114,16 @@
       "type": "scenario",
       "field_name": "Given the following image reference, create an SMS response and acknowledge the caregiver who called off.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text",
       "score_field": "12 (CG LMCO)",
-      "prompt": "Caregiver Daniel called at 6 PM on Fri May 2 to say he cannot make tonight's visit with client Harold due to a car problem. Write an SMS to Daniel acknowledging the call-off.",
+      "prompt": "Caregiver Daniel called at 6 PM on Fri May 2 to say he cannot make tonight's visit with client Harold due to a car problem. Write an SMS to Daniel acknowledging the call-off and asking him to keep you posted.",
       "expected_points": [
         "addresses the caregiver by name (Daniel)",
-        "acknowledges the reason (car problem)",
-        "confirms receipt of the call-off",
-        "professional and empathetic tone",
-        "mentions looking for a replacement or next steps"
+        "thanks or acknowledges receipt of the call-off",
+        "asks the caregiver to keep you posted or update on their condition",
+        "professional and empathetic tone"
       ],
-      "required_keywords": ["daniel"],
+      "required_keywords": [
+        "daniel"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -132,15 +133,17 @@
       "type": "scenario",
       "field_name": "Given the following image reference, create an SMS spiel to ask outgoing caregiver if they can extend.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem.-Text",
       "score_field": "13 (Extend)",
-      "prompt": "Daniel (scheduled for tonight) called off due to a car problem. Write an SMS to the OUTGOING caregiver asking if they can extend their shift to cover.",
+      "prompt": "Daniel called off tonight's visit with Harold due to a car problem. The outgoing caregiver is Annabel. Write an SMS to Annabel asking if she can extend her shift to cover until a replacement is found.",
       "expected_points": [
-        "polite professional greeting to the outgoing caregiver",
-        "briefly explains the situation (incoming CG cannot make it)",
-        "asks whether they can extend",
-        "mentions the shift timeframe or end time",
-        "shows appreciation for considering"
+        "addresses the outgoing caregiver (Annabel or appropriate name)",
+        "explains that the incoming aide (Daniel) called off",
+        "explicitly asks if the outgoing CG can extend their shift",
+        "mentions finding an aide replacement or that the client cannot be left alone",
+        "professional, polite, and appreciative tone"
       ],
-      "required_keywords": ["extend"],
+      "required_keywords": [
+        "extend"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -150,15 +153,16 @@
       "type": "scenario",
       "field_name": "Given the following image reference, create an SMS spiel to offer the open visit to our caregivers.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled 8PM - 8AM visit later tonight due car problem.-Text",
       "score_field": "14 (Open Visit)",
-      "prompt": "Daniel called off his 8 PM - 8 AM visit tonight. Write an SMS broadcast offering this open visit to other caregivers.",
+      "prompt": "Daniel called off his 8 PM – 8 AM visit tonight with Harold. Write a brief SMS broadcast to offer this open visit to other caregivers.",
       "expected_points": [
-        "clear statement that there is an open visit",
-        "includes the shift times (8 PM - 8 AM)",
-        "includes the date (May 2nd / tonight / Friday)",
-        "asks for confirmation / reply if interested",
-        "professional tone"
+        "clearly states there is an urgent open shift or coverage need",
+        "includes the shift times (8P-8A or 8PM-8AM)",
+        "asks caregivers to respond if available (by message or call)",
+        "professional and concise broadcast tone"
       ],
-      "required_keywords": ["8"],
+      "required_keywords": [
+        "8"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -168,15 +172,17 @@
       "type": "scenario",
       "field_name": "Given the following image reference, create an SMS spiel to inform the client that caregiver called off and we're still looking for a replacement.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text",
       "score_field": "15 (Search)",
-      "prompt": "Daniel called off tonight's visit with Harold. Write an SMS to client Harold or his son Paul informing them of the call-off and that a replacement is being searched for.",
+      "prompt": "Daniel called off tonight's visit with Harold. The outgoing aide has been asked to stay. Write an SMS to Harold's son Paul informing them of the call-off and that a replacement is being actively secured.",
       "expected_points": [
-        "addresses client/family by name (Harold or Paul)",
-        "informs the caregiver cannot make it",
-        "states a replacement is being searched for",
-        "apologizes or expresses empathy for the inconvenience",
-        "commits to providing an update"
+        "addresses the responsible party or client by name (Paul or Harold)",
+        "informs that the caregiver called off",
+        "states a replacement is actively being sought",
+        "mentions asking the outgoing aide to stay or extend",
+        "commits to providing an update and thanks for understanding"
       ],
-      "required_keywords": ["replacement"],
+      "required_keywords": [
+        "replacement"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -186,15 +192,17 @@
       "type": "scenario",
       "field_name": "Given the following image reference, create an SMS spiel to update the client NO caregiver is available to pick up the shift-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit later tonight due car problem. Client name is Harold. Responsible Party's (Son) name is Paul.-Text",
       "score_field": "16 (No CG)",
-      "prompt": "After searching, no caregiver is available to cover Harold's visit tonight. Write an SMS to the client (Harold) or his son (Paul) informing them no replacement was found.",
+      "prompt": "After reaching out to all available caregivers, no one can cover Harold's visit tonight. Write an SMS to Paul (Harold's son) informing them that no replacement was found.",
       "expected_points": [
-        "addresses client/family by name (Harold or Paul)",
-        "clearly states no caregiver is available",
-        "apologizes sincerely",
-        "suggests a next step or contact number",
-        "professional, empathetic tone"
+        "addresses the responsible party or client by name (Paul or Harold)",
+        "clearly states no caregiver could be secured",
+        "mentions having reached out to all available caregivers",
+        "sincerely apologizes for the inconvenience",
+        "professional and empathetic tone"
       ],
-      "required_keywords": ["no"],
+      "required_keywords": [
+        "unable"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -204,15 +212,19 @@
       "type": "scenario",
       "field_name": "Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) caregiver Annabel informed that she will be late for 30 minutes to highway traffic.-Text",
       "score_field": "17 (CG Late)",
-      "prompt": "Annabel called to say she will be 30 minutes late on Fri May 2 due to highway traffic. Compose a group-chat update to the office admin partners.",
+      "prompt": "Client: Harold. Caregiver Annabel advised she will be 30 minutes late due to highway traffic on Fri May 2. Client has been informed and visit time adjusted. Compose a group-chat update to your office admin partners.",
       "expected_points": [
+        "includes the client name (Harold)",
         "names the caregiver (Annabel)",
         "states she will be 30 minutes late",
         "states the reason (highway traffic)",
-        "includes the date (May 2nd / Friday)",
-        "concise, admin-partner tone"
+        "notes the client has been informed or visit time adjusted",
+        "concise, admin memo-style tone"
       ],
-      "required_keywords": ["annabel", "30"],
+      "required_keywords": [
+        "annabel",
+        "30"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -222,15 +234,19 @@
       "type": "scenario",
       "field_name": "Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: Client's son, Paul called to inform that he will take his father to a doctor's appointment and they don't need an aide on Sunday, May 4th.-Text",
       "score_field": "18 (Visit Cancel)",
-      "prompt": "Paul (client's son) called to cancel the aide for Sun May 4 because he is taking his father to a doctor. Compose a group-chat update to the office admin partners.",
+      "prompt": "Client: Harold. Paul (Harold's son) called to cancel the visit on Sunday 05/04 because he is taking his father to a doctor's appointment. Shift has been updated and CG has been informed. Compose a group-chat update to your office admin partners.",
       "expected_points": [
-        "names the responsible party (Paul) and relationship (son)",
-        "states visit cancellation for Sunday May 4",
-        "gives the reason (doctor's appointment)",
-        "notes no aide is needed that day",
-        "concise, admin-partner tone"
+        "includes the client name (Harold)",
+        "names the responsible party (Paul) and their relationship (son)",
+        "states the visit is cancelled for Sunday or the specific date (05/04)",
+        "states the reason (doctor's appointment)",
+        "notes the shift has been updated and the caregiver informed",
+        "concise, admin memo-style tone"
       ],
-      "required_keywords": ["paul", "may 4"],
+      "required_keywords": [
+        "paul",
+        "cancel"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -240,15 +256,20 @@
       "type": "scenario",
       "field_name": "Given the following image reference, compose an update to post in your GROUP CHAT with your office admin partners.-SCENARIO: May 2nd (Friday) You received a call at 6:00 PM from caregiver Daniel informing that he won't make it to his scheduled visit with his client Harold later tonight due car problem. -Text",
       "score_field": "19 (CG absent)",
-      "prompt": "Daniel called off tonight's visit with Harold due to a car problem. Compose a group-chat update to the office admin partners.",
+      "prompt": "Client: Harold. Caregiver Daniel LMCO (last-minute call-off) due to car problem, 8 PM – 8 AM shift. Shift sent out via app. Reaching out to recommended and other caregivers. Asked outgoing CG to extend; waiting for response. Compose a group-chat update to your office admin partners.",
       "expected_points": [
-        "names the caregiver (Daniel) and client (Harold)",
-        "states call-off for tonight's visit",
-        "gives the reason (car problem)",
-        "notes a replacement is being sought",
-        "concise, admin-partner tone"
+        "includes the client name (Harold)",
+        "names the caregiver (Daniel)",
+        "states LMCO or call-off due to car problem",
+        "includes the shift times (8P-8A or 8PM-8AM)",
+        "notes actions taken: shift sent out and reaching out to caregivers",
+        "mentions asking the outgoing CG to extend",
+        "concise, admin memo-style tone"
       ],
-      "required_keywords": ["daniel", "harold"],
+      "required_keywords": [
+        "daniel",
+        "harold"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -258,15 +279,18 @@
       "type": "scenario",
       "field_name": "Update the shift memo/note based on the scenario.",
       "score_field": "20 (Memo flu)",
-      "prompt": "Update the shift memo/note for a scenario involving a caregiver out with flu (see original scenario image/reference).",
+      "prompt": "Scenario: 05/01 – Caregiver Matthew called off (LMCO) due to flu. Logged by Kim. Write a brief shift memo/note for this event.",
       "expected_points": [
-        "records the reason (flu / illness)",
-        "notes the date",
-        "identifies caregiver or client affected",
-        "states action taken (replacement or cancellation)",
-        "clear, factual, memo-style wording"
+        "records the date (05/01 or equivalent)",
+        "names the caregiver (Matthew)",
+        "states the caregiver called off or LMCO",
+        "states the reason (flu or illness)",
+        "includes the initials or name of the person who handled/logged it (Kim)"
       ],
-      "required_keywords": ["flu"],
+      "required_keywords": [
+        "flu",
+        "matthew"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -276,15 +300,18 @@
       "type": "scenario",
       "field_name": "Update the shift memo/note based on the scenario. 2",
       "score_field": "21 (Memo Clock)",
-      "prompt": "Update the shift memo/note for a scenario involving a clock-in / clock-out issue (see original scenario image/reference).",
+      "prompt": "Scenario: 05/01 – Caregiver Matthew had a manual clock-in recorded at 7:54 AM. Logged by Kim. Write a brief shift memo/note for this event.",
       "expected_points": [
-        "records the clock-in or clock-out discrepancy",
-        "notes the date and time",
-        "identifies caregiver",
-        "states action taken or correction made",
-        "clear, factual, memo-style wording"
+        "records the date (05/01 or equivalent)",
+        "names the caregiver (Matthew)",
+        "indicates a manual clock-in or time discrepancy",
+        "includes the specific time (7:54 AM or similar)",
+        "includes the initials or name of the person who handled/logged it (Kim)"
       ],
-      "required_keywords": ["clock"],
+      "required_keywords": [
+        "clock",
+        "matthew"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -294,15 +321,19 @@
       "type": "scenario",
       "field_name": "Update the shift memo/note based on the scenario. 3",
       "score_field": "22 (Extended)",
-      "prompt": "Update the shift memo/note for a scenario where a shift was extended (see original scenario image/reference).",
+      "prompt": "Scenario: 05/01 – Caregiver Matthew extended until 8:58 PM due to food and bathroom assist. Logged by Kim. Write a brief shift memo/note for this event.",
       "expected_points": [
-        "records the extension",
-        "notes new end time or extra hours",
-        "identifies caregiver and client",
-        "notes reason for extension",
-        "clear, factual, memo-style wording"
+        "records the date (05/01 or equivalent)",
+        "names the caregiver (Matthew)",
+        "states the shift was extended",
+        "includes the new end time (8:58 PM or similar)",
+        "states the reason (food & bathroom assist or similar task)",
+        "includes the initials or name of the person who handled/logged it (Kim)"
       ],
-      "required_keywords": ["extend"],
+      "required_keywords": [
+        "extend",
+        "matthew"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
@@ -320,7 +351,10 @@
         "mentions coverage/usage differences (e.g., LTC often reimburses; VA may provide direct services or aid & attendance)",
         "explanation is coherent and demonstrates understanding, not just keyword dropping"
       ],
-      "required_keywords": ["ltc", "va"],
+      "required_keywords": [
+        "ltc",
+        "va"
+      ],
       "weight": 1,
       "max_score": 5,
       "needs_trainer_review": true
