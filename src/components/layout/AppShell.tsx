@@ -294,7 +294,7 @@ export default function AppShell({
           </span>
         </header>
 
-        <main className="flex-1 overflow-y-auto bg-slate-50">
+        <main className="flex-1 overflow-auto bg-slate-50">
           {children}
         </main>
       </div>

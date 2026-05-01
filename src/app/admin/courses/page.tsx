@@ -42,8 +42,8 @@ export default async function AdminCoursesPage() {
           <p className="font-medium">No courses yet</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-x-auto">
+          <table className="w-full min-w-[540px] text-sm">
             <thead>
               <tr className="border-b border-slate-100 bg-slate-50">
                 <th className="text-left px-5 py-3 font-medium text-slate-500">Course</th>

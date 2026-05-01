@@ -97,14 +97,14 @@ export default async function EWSPage() {
       </div>
 
       {/* Flagged talents table */}
-      <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h2 className="font-semibold text-slate-900">All Talent Flags</h2>
         </div>
         {flagged.length === 0 ? (
           <p className="text-sm text-slate-400 p-5">All talents are on track — no flags at this time.</p>
         ) : (
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[600px] text-sm">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100">
                 <th className="text-left px-5 py-3 font-medium text-slate-500">Talent</th>
