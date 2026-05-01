@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import Sidebar from "@/components/layout/Sidebar";
+import AppShell from "@/components/layout/AppShell";
 import SessionProvider from "@/components/SessionProvider";
 
 export default async function TalentLayout({ children }: { children: React.ReactNode }) {
@@ -12,16 +12,13 @@ export default async function TalentLayout({ children }: { children: React.React
 
   return (
     <SessionProvider>
-      <div className="flex h-screen overflow-hidden">
-        <Sidebar
-          role={session.user.role}
-          userName={session.user.name ?? ""}
-          userEmail={session.user.email ?? ""}
-        />
-        <main className="flex-1 overflow-y-auto bg-slate-50">
-          {children}
-        </main>
-      </div>
+      <AppShell
+        role={session.user.role}
+        userName={session.user.name ?? ""}
+        userEmail={session.user.email ?? ""}
+      >
+        {children}
+      </AppShell>
     </SessionProvider>
   );
 }
