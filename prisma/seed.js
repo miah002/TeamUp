@@ -14,7 +14,7 @@ async function main() {
   const adminPassword = await bcrypt.hash("admin1234", 10);
   const admin = await prisma.user.upsert({
     where: { email: "admin@teamup.com" },
-    update: {},
+    update: { password: adminPassword },
     create: {
       email: "admin@teamup.com",
       name: "TeamUp Admin",
@@ -55,7 +55,7 @@ async function main() {
   for (const t of talentData) {
     const talent = await prisma.user.upsert({
       where: { email: t.email },
-      update: {},
+      update: { password: talentPassword },
       create: {
         email: t.email,
         name: t.name,
