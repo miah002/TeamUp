@@ -23,7 +23,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
 
   const subCourseProgress = course.subCourses.length > 0
     ? await prisma.subCourseProgress.findMany({
-        where: { userId: session.user.id, subCourseId: { in: course.subCourses.map((s) => s.id) } },
+        where: { userId: session.user.id, subCourseId: { in: course.subCourses.map((s: { id: string }) => s.id) } },
       })
     : [];
 
