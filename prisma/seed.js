@@ -5,7 +5,8 @@ const bcrypt = require("bcryptjs");
 require("dotenv/config");
 
 const url = process.env.DATABASE_URL ?? "file:./prisma/dev.db";
-const adapter = new PrismaLibSql({ url });
+const authToken = process.env.TURSO_AUTH_TOKEN;
+const adapter = new PrismaLibSql({ url, authToken });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
