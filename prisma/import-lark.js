@@ -118,8 +118,12 @@ function reverseName(raw) {
 
 function parseDate(raw) {
   if (!raw || !raw.trim()) return null;
-  const d = new Date(raw.trim());
-  return isNaN(d.getTime()) ? null : d.toISOString();
+  // Extract YYYY/MM/DD or YYYY-MM-DD parts and store as UTC midnight
+  // to avoid timezone shifts (e.g. UTC+8 turning June 14 into June 13 UTC)
+  const match = raw.trim().match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+  if (!match) return null;
+  const [, y, m, d] = match;
+  return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}T00:00:00.000Z`;
 }
 
 function isUrl(val) {
@@ -350,6 +354,8 @@ async function main() {
       }
 
       // ── Documents ──────────────────────────────────────────────────────
+      // Delete first so re-runs don't create duplicates
+      await client.execute({ sql: `DELETE FROM talent_documents WHERE userId = ?`, args: [userId] });
       const docs = [
         { type: "RESUME", col: C.RESUME },
         { type: "PITCH_VIDEO", col: C.PITCH_VIDEO },
@@ -366,11 +372,7 @@ async function main() {
         const val = col(row, doc.col);
         if (!isUrl(val)) continue;
         await client.execute({
-          sql: `
-            INSERT INTO talent_documents (id, userId, type, url, label, createdAt)
-            VALUES (?, ?, ?, ?, NULL, ?)
-            ON CONFLICT DO NOTHING
-          `,
+          sql: `INSERT INTO talent_documents (id, userId, type, url, label, createdAt) VALUES (?, ?, ?, ?, NULL, ?)`,
           args: [cuid(), userId, doc.type, val, now],
         });
       }
