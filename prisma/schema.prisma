@@ -23,7 +23,13 @@ model User {
   avatar     String?
   phone      String?
   bio        String?
-  larkId     String?
+  larkId       String?
+  office       String?
+  availability String?
+  cohort       String?
+  birthdate    DateTime?
+  city         String?
+  region       String?
 
   // Relations
   courseProgress    CourseProgress[]
