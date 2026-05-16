@@ -46,7 +46,7 @@ export default async function EWSPage() {
   const mediumRisk = flagged.filter((t) => t.risk === "MEDIUM").length;
 
   const chartCallouts = talentStats.filter((t) => t.callouts30d > 0).map((t) => ({ name: t.name.split(" ")[0], value: t.callouts30d }));
-  const chartCourses = talentStats.map((t) => ({ name: t.name.split(" ")[0], value: t.requiredPct }));
+  const chartCourses = talentStats.filter((t) => t.requiredPct < 100).map((t) => ({ name: t.name.split(" ")[0], value: t.requiredPct }));
 
   return (
     <div className="p-6 md:p-8 max-w-6xl mx-auto">
@@ -91,8 +91,12 @@ export default async function EWSPage() {
         </div>
         <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
           <h2 className="font-semibold text-slate-900 mb-1">Required Course Completion</h2>
-          <p className="text-xs text-slate-400 mb-4">% of mandatory courses completed per talent</p>
-          <EWSCharts type="courses" data={chartCourses} />
+          <p className="text-xs text-slate-400 mb-4">Talents below 100% completion</p>
+          {chartCourses.length === 0 ? (
+            <p className="text-sm text-slate-400 py-8 text-center">All talents have completed required courses.</p>
+          ) : (
+            <EWSCharts type="courses" data={chartCourses} />
+          )}
         </div>
       </div>
 
