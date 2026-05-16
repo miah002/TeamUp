@@ -17,7 +17,7 @@ export default async function AdminCoursesPage() {
   const totalTalents = await prisma.user.count({ where: { role: "TALENT" } });
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-6 md:p-8 max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Courses</h1>

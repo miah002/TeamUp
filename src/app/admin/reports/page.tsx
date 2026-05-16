@@ -4,6 +4,7 @@ export default async function AdminReportsPage() {
   const [
     totalTalents,
     activeTalents,
+    inactiveTalents,
     onLeaveTalents,
     resignedTalents,
     totalCourses,
@@ -14,6 +15,7 @@ export default async function AdminReportsPage() {
   ] = await Promise.all([
     prisma.user.count({ where: { role: "TALENT" } }),
     prisma.user.count({ where: { role: "TALENT", status: "ACTIVE" } }),
+    prisma.user.count({ where: { role: "TALENT", status: "INACTIVE" } }),
     prisma.user.count({ where: { role: "TALENT", status: "ON_LEAVE" } }),
     prisma.user.count({ where: { role: "TALENT", status: "RESIGNED" } }),
     prisma.course.count(),
@@ -45,7 +47,7 @@ export default async function AdminReportsPage() {
   }).length;
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-6 md:p-8 max-w-5xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
         <p className="text-slate-500 mt-1">
@@ -56,10 +58,11 @@ export default async function AdminReportsPage() {
 
       {/* Workforce Summary */}
       <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Workforce</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         {[
           { label: "Total Talents", value: totalTalents, color: "text-[#C8102E]" },
           { label: "Active", value: activeTalents, color: "text-emerald-600" },
+          { label: "Inactive", value: inactiveTalents, color: "text-slate-500" },
           { label: "On Leave", value: onLeaveTalents, color: "text-amber-500" },
           { label: "Resigned", value: resignedTalents, color: "text-red-500" },
         ].map((s) => (
