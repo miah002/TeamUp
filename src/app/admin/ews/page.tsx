@@ -49,7 +49,7 @@ export default async function EWSPage() {
   const chartCourses = talentStats.map((t) => ({ name: t.name.split(" ")[0], value: t.requiredPct }));
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
+    <div className="p-6 md:p-8 max-w-6xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-900">Early Warning System</h1>
         <p className="text-slate-500 mt-1">Performance flags: absences, callouts, and incomplete required training.</p>

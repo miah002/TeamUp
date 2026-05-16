@@ -31,27 +31,48 @@ export default async function CoursesPage() {
   const progressMap = Object.fromEntries(progress.map((p) => [p.courseId, p.status]));
   const completedSubIds = new Set(subProgress.map((p) => p.subCourseId));
 
+  const completedCount = progress.filter((p) => p.status === "COMPLETED").length;
+  const inProgressCount = progress.filter((p) => p.status === "IN_PROGRESS").length;
+  const completionPct = courses.length > 0 ? Math.round((completedCount / courses.length) * 100) : 0;
+
   const categories = [...new Set(courses.map((c) => c.category ?? "General"))];
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
-      <div className="mb-8">
+    <div className="p-6 md:p-8 max-w-5xl mx-auto">
+      <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-900">Training & Courses</h1>
-        <p className="text-slate-500 mt-1">Click a course to see its modules. Open the course to track your progress.</p>
+        <p className="text-slate-500 mt-1 text-sm">Complete required courses to stay compliant. Click a course to see its modules.</p>
       </div>
 
-      <div className="bg-[#C8102E] rounded-xl p-5 text-white mb-8 flex gap-8">
-        <div>
-          <p className="text-red-200 text-sm">Total Courses</p>
-          <p className="text-3xl font-bold">{courses.length}</p>
-        </div>
-        <div>
-          <p className="text-red-200 text-sm">Completed</p>
-          <p className="text-3xl font-bold">{progress.filter((p) => p.status === "COMPLETED").length}</p>
-        </div>
-        <div>
-          <p className="text-red-200 text-sm">In Progress</p>
-          <p className="text-3xl font-bold">{progress.filter((p) => p.status === "IN_PROGRESS").length}</p>
+      {/* Progress summary */}
+      <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 mb-6">
+        <div className="flex items-center gap-6 flex-wrap">
+          <div className="flex-1 min-w-[160px]">
+            <div className="flex justify-between text-xs text-slate-500 mb-2">
+              <span>Overall completion</span>
+              <span className="font-semibold text-slate-700">{completedCount} / {courses.length} courses</span>
+            </div>
+            <div className="w-full bg-slate-100 rounded-full h-2.5">
+              <div
+                className={`h-2.5 rounded-full transition-all ${completionPct === 100 ? "bg-emerald-500" : "bg-[#C8102E]"}`}
+                style={{ width: `${completionPct}%` }}
+              />
+            </div>
+          </div>
+          <div className="flex gap-6 text-center">
+            <div>
+              <p className="text-2xl font-bold text-[#C8102E]">{completionPct}%</p>
+              <p className="text-xs text-slate-400">Complete</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-amber-500">{inProgressCount}</p>
+              <p className="text-xs text-slate-400">In Progress</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-slate-700">{courses.length - completedCount - inProgressCount}</p>
+              <p className="text-xs text-slate-400">Not Started</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -66,7 +87,7 @@ export default async function CoursesPage() {
           const catColor = categoryColors[cat] ?? categoryColors.General;
           return (
             <div key={cat} className="mb-8">
-              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">{cat}</h2>
+              <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">{cat}</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {catCourses.map((course) => {
                   const status = progressMap[course.id] ?? "NOT_STARTED";

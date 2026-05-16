@@ -15,15 +15,8 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-
+    const result = await signIn("credentials", { email, password, redirect: false });
     setLoading(false);
-
     if (result?.error) {
       setError("Invalid email or password. Please try again.");
     } else {
@@ -33,19 +26,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
-      <div className="w-full max-w-md">
-        {/* Logo / Brand */}
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="w-full max-w-sm">
+        {/* Brand */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-              <span className="text-5xl font-extrabold text-[#1B1F3B] tracking-tight leading-none">tm</span>
-              <span className="text-5xl font-extrabold text-[#C8102E] tracking-tight leading-none">up</span>
-            </div>
-          <p className="text-slate-500 text-sm mt-1">Talents Portal — Sign in to your account</p>
+          <div className="inline-flex items-center gap-0 mb-3">
+            <span className="text-5xl font-extrabold text-[#1B1F3B] tracking-tight leading-none">tm</span>
+            <span className="text-5xl font-extrabold text-[#C8102E] tracking-tight leading-none">up</span>
+          </div>
+          <p className="text-slate-500 text-sm">Sign in to your account</p>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+        <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
@@ -91,7 +84,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-[#C8102E] hover:bg-[#a50d26] disabled:bg-red-300 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:ring-offset-2"
+              className="w-full py-2.5 px-4 bg-[#C8102E] hover:bg-[#a50d26] disabled:opacity-60 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#C8102E] focus:ring-offset-2"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -99,11 +92,9 @@ export default function LoginPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  Signing in...
+                  Signing in…
                 </span>
-              ) : (
-                "Sign In"
-              )}
+              ) : "Sign In"}
             </button>
           </form>
 
@@ -114,7 +105,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-xs text-slate-400 mt-6">
-          © {new Date().getFullYear()} TeamUp Healthcare Support Staffing
+          &copy; {new Date().getFullYear()} TeamUp Healthcare Support Staffing
         </p>
       </div>
     </div>
