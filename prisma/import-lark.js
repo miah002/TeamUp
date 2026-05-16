@@ -1,8 +1,13 @@
 /**
  * import-lark.js
- * Reads the Lark Base CSV export and upserts active talent accounts into Turso.
+ * Reads the Lark Base CSV export and upserts all talent records into Turso.
  *
- * Active = PAIRING === "PAIRED"  AND  FINAL TENURITY COMBINED !== "DISENGAGED"
+ * Active   = PAIRING === "PAIRED"  AND  FINAL TENURITY !== "DISENGAGED"
+ *            → status ACTIVE, password talent1234 (can log in)
+ *
+ * Inactive = FINAL TENURITY === "DISENGAGED" → status RESIGNED
+ *            everything else                 → status INACTIVE
+ *            → random unguessable password (record exists, cannot log in)
  *
  * Usage:
  *   node prisma/import-lark.js "path/to/export.csv"
@@ -12,6 +17,7 @@ require("dotenv").config();
 
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { parse } = require("csv-parse/sync");
 const bcrypt = require("bcryptjs");
 const { createClient } = require("@libsql/client");
@@ -157,17 +163,19 @@ async function main() {
   const [, ...dataRows] = rows;
   console.log(`Total rows (excluding header): ${dataRows.length}`);
 
-  const active = dataRows.filter((row) => {
-    return col(row, C.PAIRING) === "PAIRED" && col(row, C.FINAL_TENURITY) !== "DISENGAGED";
-  });
-  console.log(`Active talents to import: ${active.length}\n`);
+  const toImport = dataRows.filter((row) => col(row, C.NAME).trim() !== "");
+  const activeCount = toImport.filter(
+    (r) => col(r, C.PAIRING) === "PAIRED" && col(r, C.FINAL_TENURITY) !== "DISENGAGED"
+  ).length;
+  console.log(`Active (can log in): ${activeCount}`);
+  console.log(`Inactive (record only): ${toImport.length - activeCount}\n`);
 
-  const DEFAULT_PASSWORD = await bcrypt.hash("talent1234", 10);
+  const ACTIVE_PASSWORD = await bcrypt.hash("talent1234", 10);
   const now = new Date().toISOString();
 
   let ok = 0, skipped = 0, errors = 0;
 
-  for (const row of active) {
+  for (const row of toImport) {
     const email = col(row, C.EMAIL).toLowerCase();
     const rawName = col(row, C.NAME);
 
@@ -178,6 +186,14 @@ async function main() {
     }
 
     const name = reverseName(rawName) || email.split("@")[0];
+
+    const isActive = col(row, C.PAIRING) === "PAIRED" && col(row, C.FINAL_TENURITY) !== "DISENGAGED";
+    const isDisengaged = col(row, C.FINAL_TENURITY) === "DISENGAGED";
+    const status = isActive ? "ACTIVE" : isDisengaged ? "RESIGNED" : "INACTIVE";
+    // Inactive users get a random unguessable password so they cannot log in
+    const password = isActive
+      ? ACTIVE_PASSWORD
+      : await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 10);
 
     try {
       // ── Upsert user ────────────────────────────────────────────────────
@@ -193,7 +209,7 @@ async function main() {
             larkId, cohort, trainingClass, discProfile, axcAcademy,
             createdAt, updatedAt
           ) VALUES (
-            ?, ?, ?, ?, 'TALENT', 'ACTIVE',
+            ?, ?, ?, ?, 'TALENT', ?,
             ?, ?, ?,
             ?, ?, ?, ?, ?,
             ?, NULL,
@@ -229,7 +245,7 @@ async function main() {
             updatedAt        = excluded.updatedAt
         `,
         args: [
-          cuid(), email, name, DEFAULT_PASSWORD,
+          cuid(), email, name, password, status,
           col(row, C.PHONE) || null,
           col(row, C.ALTERNATIVE) || null,
           col(row, C.TELEGRAM) || null,
@@ -393,7 +409,7 @@ async function main() {
         });
       }
 
-      console.log(`  OK  ${email} — ${name}`);
+      console.log(`  OK  [${isActive ? "ACTIVE" : status}] ${email} — ${name}`);
       ok++;
     } catch (err) {
       console.error(`  ERR ${email}: ${err.message}`);
