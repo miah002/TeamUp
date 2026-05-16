@@ -45,7 +45,10 @@ async function run() {
       try {
         await client.execute(stmt.endsWith(";") ? stmt : stmt + ";");
       } catch (err) {
-        if (err.message.includes("already exists")) {
+        if (
+          err.message.includes("already exists") ||
+          err.message.includes("duplicate column name")
+        ) {
           console.log(`  ⚠  skipped (already exists)`);
         } else {
           throw err;
