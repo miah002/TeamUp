@@ -7,39 +7,124 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  name       String
-  password   String
-  role       String   @default("TALENT") // TALENT | ADMIN
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("TALENT") // TALENT | ADMIN
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  // Profile fields
-  position   String?
-  department String?
-  startDate  DateTime?
-  status     String    @default("ACTIVE") // ACTIVE | INACTIVE | ON_LEAVE | RESIGNED
-  avatar     String?
-  phone      String?
-  bio        String?
-  larkId       String?
-  office       String?
-  availability String?
-  cohort       String?
-  birthdate    DateTime?
-  city         String?
-  region       String?
+  // Personal / contact
+  phone            String?
+  alternativePhone String?
+  telegram         String?
+  birthdate        DateTime?
+  address          String?
+  zip              String?
+  city             String?
+  region           String?
+  avatar           String?
+  photo            String?
+  bio              String?
+
+  // Work / placement
+  position          String?
+  department        String?
+  office            String?
+  availability      String?
+  shiftWithOtherJob String?
+  status            String    @default("ACTIVE") // ACTIVE | INACTIVE | ON_LEAVE | RESIGNED
+  startDate         DateTime?
+  datePaired        DateTime?
+  tuOnboardingDate  DateTime?
+
+  // TeamUp identity
+  larkId        String?
+  cohort        String?
+  trainingClass String?
+  discProfile   String?
+  axcAcademy    String?
 
   // Relations
   courseProgress    CourseProgress[]
   lifecycleEvents   LifecycleEvent[]
-  adminTasks        AdminTask[]         @relation("AssignedTo")
-  createdTasks      AdminTask[]         @relation("CreatedBy")
+  adminTasks        AdminTask[]           @relation("AssignedTo")
+  createdTasks      AdminTask[]           @relation("CreatedBy")
   callouts          Callout[]
   subCourseProgress SubCourseProgress[]
+  emergencyContact  TalentEmergencyContact?
+  skills            TalentSkill[]
+  equipment         TalentEquipment?
+  documents         TalentDocument[]
+  placements        TalentPlacement[]
 
   @@map("users")
+}
+
+model TalentEmergencyContact {
+  id     String @id @default(cuid())
+  userId String @unique
+  name   String
+  phone  String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("talent_emergency_contacts")
+}
+
+model TalentSkill {
+  id     String  @id @default(cuid())
+  userId String
+  skill  String
+  notes  String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skill])
+  @@map("talent_skills")
+}
+
+model TalentEquipment {
+  id                String  @id @default(cuid())
+  userId            String  @unique
+  mainDevice        String?
+  mainDeviceSpecs   String?
+  backupDevice      String?
+  backupDeviceSpecs String?
+  isp               String?
+  backupPower       String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("talent_equipment")
+}
+
+model TalentDocument {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // RESUME | PITCH_VIDEO | INTRO_VIDEO | DISC_FILE | INTERVIEW | PRAC_PROD | TESTIMONIAL | OG_RESUME | APPLICATION
+  url       String
+  label     String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("talent_documents")
+}
+
+model TalentPlacement {
+  id                   String    @id @default(cuid())
+  userId               String
+  opsNumber            Int       // 1 or 2
+  clientOnboardingDate DateTime?
+  bauDate              DateTime?
+  disengagementDate    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, opsNumber])
+  @@map("talent_placements")
 }
 
 model Course {
@@ -124,7 +209,7 @@ model Callout {
 model LifecycleEvent {
   id          String   @id @default(cuid())
   userId      String
-  type        String   // HIRED | PROMOTED | DEPARTMENT_CHANGE | STATUS_CHANGE | PERFORMANCE_REVIEW | WARNING | RECOGNITION | RESIGNED
+  type        String
   title       String
   description String?
   date        DateTime
